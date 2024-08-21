@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
 export default function LoginScreen({ navigation }) {
@@ -36,7 +35,6 @@ export default function LoginScreen({ navigation }) {
                 <Text style={styles.link}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
 
-            <StatusBar style="auto" />
         </View>
     );
 }
