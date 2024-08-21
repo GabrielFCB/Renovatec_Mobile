@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function Login({ navigation }) {
+export default function EstoqueScreen() {
     return (
 
         <View style={styles.container}>
-            <Text>Essa é a tela de Login</Text>
-            <Button title="Entrar" onPress={() => navigation.navigate("Menu")}></Button>
+            <Text>Essa é de Estoque</Text>
             <StatusBar style="auto" />
         </View>
 
