@@ -8,17 +8,11 @@ export default function MenuScreen({ navigation }) {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Estoque")}
-            >
-                <Text style={styles.buttonText}>Ver Estoque</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("Producao")}
+                onPress={() => navigation.navigate("Buttons")}
             >
                 <Text style={styles.buttonText}>Iniciar Produção</Text>
             </TouchableOpacity>
+
         </View>
     );
 }

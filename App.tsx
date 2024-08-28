@@ -7,6 +7,7 @@ import MenuScreen from './screens/MenuScreen';
 import EstoqueScreen from './screens/EstoqueScreen';
 import ProducaoScreen from './screens/ProducaoScreen';
 import SenhaResetScreen from './screens/SenhaResetScreen';
+import ButtonScreen from './screens/ButtonScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="Estoque" component={EstoqueScreen} />
         <Stack.Screen name="Producao" component={ProducaoScreen} />
         <Stack.Screen name="SenhaReset" component={SenhaResetScreen} />
+        <Stack.Screen name="Buttons" component={ButtonScreen} options={{ title: 'Voltar' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
