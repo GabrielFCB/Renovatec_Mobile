@@ -1,6 +1,11 @@
+import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 
-export default function ButtonScreen() {
+interface ButtonScreenProps {
+    navigation: any;
+}
+
+const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
     const buttonNames = [
         'Exame Inicial',
         'Raspa',
@@ -19,14 +24,22 @@ export default function ButtonScreen() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <Text style={styles.title}>Linha de produção</Text>
                 {buttonNames.map((name, index) => (
-                    <TouchableOpacity key={index} style={styles.button}>
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.button}
+                        onPress={() => {
+                            if (name === 'Exame Inicial') {
+                                navigation.navigate('ExamScreen');
+                            }
+                        }}
+                    >
                         <Text style={styles.buttonText}>{name}</Text>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -58,3 +71,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
+
+export default ButtonScreen;
