@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { CheckBox } from '@rneui/themed';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../src/types';
 
-const CheckboxComponent = () => {
+type Props = StackScreenProps<RootStackParamList, 'ExamScreen'>;
+
+const ExamScreen: React.FC<Props> = ({ navigation }) => {
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
 
-  // Mock data for the example
-  const employeeName = "João Silva"; // This should come from the database based on login
-  const currentDate = new Date().toLocaleDateString(); // Automatically get the current date
+  const employeeName = "João Silva";
+  const currentDate = new Date().toLocaleDateString();
 
   const handleApprovedToggle = () => {
     if (!approved) {
@@ -28,13 +30,16 @@ const CheckboxComponent = () => {
     if (!approved && !rejected) {
       alert('Por favor, selecione uma opção.');
     } else {
-      alert(`Status: ${approved ? 'Aprovado' : 'Reprovado'}`);
-    }
-  };
+      const status = approved ? 'approved' : 'rejected';
+      const orderNumber = "12345";
+      const tireId = "67890";
 
-  const handleBack = () => {
-    // Implement back navigation or logic here
-    alert('Voltando...');
+      navigation.navigate('ConfirmationExam', {
+        status,
+        orderNumber,
+        tireId,
+      });
+    }
   };
 
   return (
@@ -65,9 +70,6 @@ const CheckboxComponent = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleSave}>
             <Text style={styles.buttonText}>Salvar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleBack}>
-            <Text style={styles.buttonText}>Voltar</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -119,12 +121,12 @@ const styles = StyleSheet.create({
     borderColor: '#FF7043',
   },
   cardApproved: {
-    backgroundColor: '#DFF0D8', // Light green background for approved
-    borderColor: '#3C763D', // Darker green border
+    backgroundColor: '#DFF0D8',
+    borderColor: '#3C763D',
   },
   cardRejected: {
-    backgroundColor: '#F2DEDE', // Light red background for rejected
-    borderColor: '#A94442', // Darker red border
+    backgroundColor: '#F2DEDE',
+    borderColor: '#A94442',
   },
   cardText: {
     fontSize: 18,
@@ -151,4 +153,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckboxComponent;
+export default ExamScreen;
