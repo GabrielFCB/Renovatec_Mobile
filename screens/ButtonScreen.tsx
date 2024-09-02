@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 
+
 interface ButtonScreenProps {
     navigation: any;
 }
-
 const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
     const buttonNames = [
         'Exame Inicial',
@@ -30,7 +30,10 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                         onPress={() => {
                             if (name === 'Exame Inicial') {
                                 navigation.navigate('ExamScreen');
+                            } else if (name === 'Raspa') {
+                                navigation.navigate('RaspaScreen');
                             }
+                            
                         }}
                     >
                         <Text style={styles.buttonText}>{name}</Text>

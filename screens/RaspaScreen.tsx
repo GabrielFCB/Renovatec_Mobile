@@ -1,30 +1,17 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../src/types';
+import Toast from 'react-native-toast-message';
 
-type RootStackParamList = {
-  ExamScreen: undefined;
-  ConfirmationExam: {
-    status: string;
-    orderNumber: string;
-    tireId: string;
-  };
-};
+type Props = StackScreenProps<RootStackParamList, 'RaspaScreen'>;
 
-type ExamScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ExamScreen'>;
-type ExamScreenRouteProp = RouteProp<RootStackParamList, 'ExamScreen'>;
-
-type Props = {
-  navigation: ExamScreenNavigationProp;
-  route: ExamScreenRouteProp;
-};
-
-const ExamScreen: React.FC<Props> = ({ navigation }) => {
+const RaspaScreen: React.FC<Props> = ({ navigation }) => {
+  const [width, setWidth] = useState('');
+  const [perimeter, setPerimeter] = useState('');
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
 
-  const employeeName = "João Silva";
   const currentDate = new Date().toLocaleDateString();
 
   const handleApprovedToggle = () => {
@@ -41,33 +28,24 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleSave = () => {
-    if (!approved && !rejected) {
-      alert('Por favor, selecione uma opção.');
-    } else {
-      const status = approved ? 'approved' : 'rejected';
-      const orderNumber = "12345"; 
-      const tireId = "67890"; 
-
-      navigation.navigate('ConfirmationExam', {
-        status,
-        orderNumber,
-        tireId,
+  const handleComplete = () => {
+    if (!width || !perimeter || (!approved && !rejected)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Campos obrigatórios',
+        text2: 'Por favor, preencha todos os campos obrigatórios!',
       });
+    } else {
+      navigation.navigate('ConfirmationRaspaScreen', { width, perimeter, status: approved ? 'approved' : 'rejected' });
     }
-  };
-
-  const handleBack = () => {
-    alert('Voltando...');
   };
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Exame Inicial</Text>
+        <Text style={styles.title}>Raspa</Text>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>Funcionário: {employeeName}</Text>
           <Text style={styles.infoText}>Data: {currentDate}</Text>
         </View>
 
@@ -86,11 +64,33 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Campo obrigatório <Text style={styles.required}>*</Text></Text>
+          <TextInput
+            style={[styles.input, !width && styles.inputError]}
+            placeholder="Informe a largura do pneu"
+            value={width}
+            onChangeText={setWidth}
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Campo obrigatório <Text style={styles.required}>*</Text></Text>
+          <TextInput
+            style={[styles.input, !perimeter && styles.inputError]}
+            placeholder="Informe o perímetro do Pneu"
+            value={perimeter}
+            onChangeText={setPerimeter}
+            keyboardType="numeric"
+          />
+        </View>
+
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText}>Salvar</Text>
+          <TouchableOpacity style={styles.button} onPress={handleComplete}>
+            <Text style={styles.buttonText}>Concluído</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleBack}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
             <Text style={styles.buttonText}>Voltar</Text>
           </TouchableOpacity>
         </View>
@@ -102,7 +102,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFF5E1',
     padding: 20,
   },
   scrollContainer: {
@@ -155,6 +155,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FF7043',
   },
+  inputContainer: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
+  required: {
+    color: 'red',
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    borderColor: '#FF7043',
+    borderWidth: 1,
+    fontSize: 16,
+  },
+  inputError: {
+    borderColor: 'red',
+  },
   buttonContainer: {
     width: '100%',
     alignItems: 'center',
@@ -175,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExamScreen;
+export default RaspaScreen;

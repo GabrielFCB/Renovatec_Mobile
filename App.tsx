@@ -9,6 +9,9 @@ import SenhaResetScreen from './screens/SenhaResetScreen';
 import ButtonScreen from './screens/ButtonScreen';
 import ExamScreen from './screens/ExamScreen';
 import ConfirmationExam from './screens/ConfirmationExam';
+import RaspaScreen from './screens/RaspaScreen';
+import ConfirmationRaspaScreen from './screens/ConfirmationRaspaScreen';
+import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -35,7 +38,18 @@ export default function App() {
           component={ConfirmationExam}
           options={{ title: 'Confirmação' }}
         />
+        <Stack.Screen
+          name="RaspaScreen"
+          component={RaspaScreen}
+          options={{ title: 'Raspa' }}
+        />
+        <Stack.Screen
+          name="ConfirmationRaspaScreen"
+          component={ConfirmationRaspaScreen}
+          options={{ title: 'Confirmação da Raspa' }}
+        />
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 }
