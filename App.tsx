@@ -16,6 +16,9 @@ import ExamScreen from './screens/ExamScreen';
 import ConfirmationExam from './screens/ConfirmationExam';
 import RaspaScreen from './screens/RaspaScreen';
 import ConfirmationRaspaScreen from './screens/ConfirmationRaspaScreen';
+import AplicarBandaScreen from './screens/AplicarBandaScreen';
+import AplicarColaScreen from './screens/AplicarColaScreen';
+import Orbicushion from './screens/Orbicushion';
 import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -32,6 +35,10 @@ export default function App() {
         <Stack.Screen name="MontagemProd" component={MontagemProd} />
         <Stack.Screen name="AutoclaveProd" component={AutoclaveProd}/>
         <Stack.Screen name="ExameFinalProd" component={ExameFinalProd}/>
+        <Stack.Screen name="AplicarBandaScreen" component={AplicarBandaScreen} />
+        <Stack.Screen name="Orbicushion" component={Orbicushion} />
+        <Stack.Screen name="AplicarColaScreen" component={AplicarColaScreen} />
+
         <Stack.Screen
           name="Buttons"
           component={ButtonScreen}
@@ -57,6 +64,7 @@ export default function App() {
           component={ConfirmationRaspaScreen}
           options={{ title: 'Confirmação da Raspa' }}
         />
+
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

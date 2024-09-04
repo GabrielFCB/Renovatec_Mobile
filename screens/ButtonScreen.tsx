@@ -32,8 +32,23 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                                 navigation.navigate('ExamScreen');
                             } else if (name === 'Raspa') {
                                 navigation.navigate('RaspaScreen');
+                            } else if (name === 'Aplicação de banda') {
+                                navigation.navigate('AplicarBandaScreen')
+                            } else if (name === 'Aplicação de cola') {
+                                navigation.navigate('AplicarColaScreen')
+                            } else if (name === 'Orbicushion') {
+                                navigation.navigate('Orbicushion')
+                            } else if (name === 'Autoclave') {
+                                navigation.navigate('AutoclaveProd')
+                            }else if (name === 'Exame final') {
+                                navigation.navigate('ExameFinalProd');
+                            }else if (name === 'Autoclave') {
+                                navigation.navigate('AutoclaveProd');
+                            }else if (name === 'Montagem') {
+                                navigation.navigate('MontagemProd');
                             }
-                            
+
+
                         }}
                     >
                         <Text style={styles.buttonText}>{name}</Text>

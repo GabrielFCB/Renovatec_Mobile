@@ -8,4 +8,7 @@ export type RootStackParamList = {
   ConfirmationExam: { status: string; orderNumber: string; tireId: string };
   RaspaScreen: undefined; 
   ConfirmationRaspaScreen: { status: string; width: string; perimeter: string }; 
+  AplicarBandaScreen: { status: string; width: string; perimeter: string };
+  Orbicushion: undefined
+  AplicarColaScreen: undefined
 };
