@@ -6,14 +6,15 @@ export type RootStackParamList = {
   Buttons: undefined;
   ExamScreen: undefined;
   ConfirmationExam: { status: string; orderNumber: string; tireId: string };
-  RaspaScreen: undefined; 
-  ConfirmationRaspaScreen: { status: string; width: string; perimeter: string }; 
+  RaspaScreen: undefined;
+  ConfirmationRaspaScreen: { status: string; width: string; perimeter: string };
   AplicarColaScreen: undefined;
   Orbicushion: undefined;
-  
-  MontagemProd : undefined;
-  ConfirmationMontagem: { status: string; orderNumber: string; assemblyId: string };
   AutoclaveProd: undefined;
+  ConfirmationAutoclave: { selectedValue: string; position: string; load: string; }; 
+  MontagemProd: undefined;
+  ConfirmationMontagem: { status: string; orderNumber: string; assemblyId: string };
   AplicarBandaScreen: { status: string; width: string; perimeter: string };
   ExameFinalProd: undefined;
+  ConfirmationExFinal: { status: string; date: string };
 };
