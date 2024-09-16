@@ -9,7 +9,7 @@ const ConfirmationExam: React.FC<Props> = ({ route, navigation }) => {
   const { status, orderNumber, tireId } = route.params;
 
   const handleNewExam = () => {
-    navigation.navigate('ExamScreen');
+    navigation.navigate('Buttons');
   };
 
   return (

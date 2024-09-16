@@ -29,7 +29,6 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Menu" component={MenuScreen} />
-        <Stack.Screen name="Estoque" component={EstoqueScreen} />
         <Stack.Screen name="Producao" component={ProducaoScreen} />
         <Stack.Screen name="SenhaReset" component={SenhaResetScreen} />
         <Stack.Screen name="MontagemProd" component={MontagemProd} />
@@ -64,7 +63,6 @@ export default function App() {
           component={ConfirmationRaspaScreen}
           options={{ title: 'Confirmação da Raspa' }}
         />
-
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>
