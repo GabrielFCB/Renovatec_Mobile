@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { CheckBox } from "@rneui/themed";
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';  // Certifique-se de que o caminho esteja correto
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../src/types";
 
 type CheckboxComponentProps = {};
 
 // Tipagem para garantir que a navegação está correta
-type NavigationProp = StackNavigationProp<RootStackParamList, 'MontagemProd'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, "MontagemProd">;
 
-const CheckboxComponent: React.FunctionComponent<CheckboxComponentProps> = () => {
+const CheckboxComponent: React.FunctionComponent<
+  CheckboxComponentProps
+> = () => {
   const [check, setCheck] = useState(false);
   const navigation = useNavigation<NavigationProp>();
 
   const handleSave = () => {
-    const status = check ? 'approved' : 'rejected';  // Status baseado no checkbox
-    const orderNumber = '12345';  // Exemplo de número do pedido
-    const assemblyId = '67890';   // Exemplo de ID da montagem
+    const status = check ? "approved" : "rejected"; // Status baseado no checkbox
+    const orderNumber = "12345"; // Exemplo de número do pedido
+    const assemblyId = "67890"; // Exemplo de ID da montagem
 
     // Navegar para a tela ConfirmationMontagem passando os parâmetros corretos
-    navigation.navigate('ConfirmationMontagem', { status, orderNumber, assemblyId });
+    navigation.navigate("ConfirmationMontagem", {
+      status,
+      orderNumber,
+      assemblyId,
+    });
   };
 
   const back = () => {
