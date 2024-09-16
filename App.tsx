@@ -9,7 +9,7 @@ import ProducaoScreen from "./screens/ProducaoScreen";
 import SenhaResetScreen from "./screens/SenhaResetScreen";
 import MontagemProd from "./screens/MontagemProd";
 import AutoclaveProd from "./screens/AutoclaveProd";
-import ExameFinalProd from "./screens/ExameFinalProd";
+import ConfirmationAutoclave from './screens/ConfirmationAutoclave';
 import ButtonScreen from './screens/ButtonScreen';
 import ExamScreen from './screens/ExamScreen';
 import ConfirmationExam from './screens/ConfirmationExam';
@@ -19,6 +19,8 @@ import AplicarBandaScreen from './screens/AplicarBandaScreen';
 import AplicarColaScreen from './screens/AplicarColaScreen';
 import ConfirmationMontagem from './screens/ConfirmationMontagem';
 import Orbicushion from './screens/Orbicushion';
+import ExameFinalProd from "./screens/ExameFinalProd";
+import ConfirmationExFinal from './screens/ConfirmationsExFinal';
 import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -34,10 +36,12 @@ export default function App() {
         <Stack.Screen name="MontagemProd" component={MontagemProd} />
         <Stack.Screen name="ConfirmationMontagem" component={ConfirmationMontagem} />
         <Stack.Screen name="AutoclaveProd" component={AutoclaveProd}/>
-        <Stack.Screen name="ExameFinalProd" component={ExameFinalProd}/>
+        <Stack.Screen name="ConfirmationAutoclave" component={ConfirmationAutoclave}/>
         <Stack.Screen name="AplicarBandaScreen" component={AplicarBandaScreen} />
         <Stack.Screen name="Orbicushion" component={Orbicushion} />
         <Stack.Screen name="AplicarColaScreen" component={AplicarColaScreen} />
+        <Stack.Screen name="ExameFinalProd" component={ExameFinalProd}/>
+        <Stack.Screen name="ConfirmationExFinal" component={ConfirmationExFinal}/>
 
         <Stack.Screen
           name="Buttons"
