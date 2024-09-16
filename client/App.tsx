@@ -63,7 +63,6 @@ export default function App() {
           component={ConfirmationRaspaScreen}
           options={{ title: 'Confirmação da Raspa' }}
         />
-
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>
