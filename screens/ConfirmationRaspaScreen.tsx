@@ -9,7 +9,7 @@ const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
   const { status, width, perimeter } = route.params;
 
   const handleNewRaspa = () => {
-    navigation.navigate('RaspaScreen');
+    navigation.navigate('Buttons');
   };
   return (
     <View style={styles.container}>
