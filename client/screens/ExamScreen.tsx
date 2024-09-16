@@ -107,7 +107,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFF5E1',
     padding: 20,
   },
   scrollContainer: {

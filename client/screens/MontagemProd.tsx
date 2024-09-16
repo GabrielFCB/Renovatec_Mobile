@@ -1,23 +1,41 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { CheckBox, Icon } from "@rneui/themed";
+import { CheckBox } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../src/types";
 
 type CheckboxComponentProps = {};
+
+// Tipagem para garantir que a navegação está correta
+type NavigationProp = StackNavigationProp<RootStackParamList, "MontagemProd">;
 
 const CheckboxComponent: React.FunctionComponent<
   CheckboxComponentProps
 > = () => {
   const [check, setCheck] = useState(false);
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleSave = () => {
+    const status = check ? "approved" : "rejected"; // Status baseado no checkbox
+
+    // Navegar para a tela ConfirmationMontagem passando os parâmetros corretos
+    navigation.navigate("ConfirmationMontagem", {
+      status,
+    });
+  };
+
+  const back = () => {
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      {/* Subtitle */}
       <View>
         <Text style={styles.title}>Montagem</Text>
         <Text style={styles.subtitle}>Inerlope e Envelope</Text>
       </View>
 
-      {/* CheckBox com Mensagem */}
       <View style={styles.checkboxContainer}>
         <CheckBox
           title={check ? "FEITO!" : "NÃO FEITO!"}
@@ -30,12 +48,11 @@ const CheckboxComponent: React.FunctionComponent<
         />
       </View>
 
-      {/* Botões */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={back}>
           <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
       </View>
@@ -56,14 +73,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "#FF7043",
-    marginBottom: 5, // Margem reduzida para aproximar o texto
+    marginBottom: 5,
   },
   subtitle: {
     fontSize: 22,
     textAlign: "center",
     fontWeight: "semibold",
     color: "#FF7043",
-    marginTop: 0, // Remove o espaçamento superior para aproximar mais ainda
+    marginTop: 0,
   },
   checkboxContainer: {
     flexDirection: "row",
