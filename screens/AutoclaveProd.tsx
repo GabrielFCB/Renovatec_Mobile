@@ -5,30 +5,60 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Atualizando a importação
+import { Picker } from "@react-native-picker/picker";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../src/types";
+import { useNavigation } from "@react-navigation/native";
 
-const AutoclaveScreen = () => {
+type CheckboxComponentProps = {};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, "AutoclaveProd">;
+
+const CheckboxComponent: React.FunctionComponent<CheckboxComponentProps> = () => {
+  const [check, setCheck] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const [position, setPosition] = useState<string>("");
+  const [load, setLoad] = useState<string>("");
+
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleSave = () => {
+    // Verificar se todos os campos estão preenchidos
+    if (!selectedValue || !position || !load) {
+      Alert.alert("Erro", "Por favor, selecione uma opção.");
+      return; // Não avança para a próxima tela
+    }
+
+    // Navegar para ConfirmationAutoclave passando os parâmetros
+    navigation.navigate("ConfirmationAutoclave", {
+      selectedValue,
+      position,
+      load,
+    });
+  };
+
+  const back = () => {
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      {/* Subtitle */}
       <View>
         <Text style={styles.title}>Autoclave</Text>
       </View>
 
-      {/* Seletor */}
       <View style={styles.pickerContainer}>
         <Picker
           selectedValue={selectedValue}
           style={styles.picker}
           onValueChange={(itemValue: string) => setSelectedValue(itemValue)}
         >
-          <Picker.Item label="Selecione" value="" />
-          <Picker.Item label="Opção 1" value="opcao1" />
-          <Picker.Item label="Opção 2" value="opcao2" />
-          <Picker.Item label="Opção 3" value="opcao3" />
+          <Picker.Item label="Selecione a Autoclave" value="" />
+          <Picker.Item label="Autoclave 1" value="Autoclave 1" />
+          <Picker.Item label="Autoclave 2" value="Autoclave 2" />
+          <Picker.Item label="Autoclave 3" value="Autoclave 3" />
         </Picker>
         <TextInput
           style={styles.input}
@@ -36,6 +66,8 @@ const AutoclaveScreen = () => {
           keyboardType="numeric"
           autoCapitalize="none"
           autoCorrect={false}
+          value={position}
+          onChangeText={(text) => setPosition(text)}
         />
         <TextInput
           style={styles.input}
@@ -43,15 +75,16 @@ const AutoclaveScreen = () => {
           keyboardType="numeric"
           autoCapitalize="none"
           autoCorrect={false}
+          value={load}
+          onChangeText={(text) => setLoad(text)}
         />
       </View>
 
-      {/* Botões */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={back}>
           <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
       </View>
@@ -72,7 +105,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "#FF7043",
-    marginBottom: 5, // Margem reduzida para aproximar o texto
+    marginBottom: 5,
   },
   pickerContainer: {
     width: "100%",
@@ -114,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AutoclaveScreen;
+export default CheckboxComponent;
