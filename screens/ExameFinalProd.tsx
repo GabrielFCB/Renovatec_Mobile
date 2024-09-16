@@ -4,191 +4,145 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Platform,
+  ScrollView,
+  Alert,
 } from "react-native";
-import { CheckBox } from "@rneui/themed";
-import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../src/types";
 
-// Define o componente principal
+type NavigationProp = StackNavigationProp<RootStackParamList, "ExameFinalProd">;
+
 const ExameFinalScreen: React.FunctionComponent = () => {
-  // Estados principais
-  const [selectedValue, setSelectedValue] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [approved, setApproved] = useState(false);
+  const [rejected, setRejected] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [show, setShow] = useState<boolean>(false);
 
-  // Função para lidar com a mudança de data
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleApprovedToggle = () => {
+    if (!approved) {
+      setApproved(true);
+      setRejected(false);
+    }
+  };
+
+  const handleRejectedToggle = () => {
+    if (!rejected) {
+      setRejected(true);
+      setApproved(false);
+    }
+  };
+
   const onChangeDate = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
+    setShow(false);
     setDate(currentDate);
   };
 
-  // Função para mostrar o seletor de data
   const showDatepicker = () => {
     setShow(true);
   };
 
+  const handleSave = () => {
+    if (!approved && !rejected) {
+      Alert.alert("Erro", "Por favor, selecione uma opção (Aprovado ou Reprovado).");
+      return;
+    }
+
+    const status = approved ? "approved" : "rejected";
+    const formattedDate = date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` : "";
+
+    navigation.navigate("ConfirmationExFinal", {
+      status,
+      date: formattedDate,
+    });
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
-      <Header />
-      <PickerSection
-        selectedValue={selectedValue}
-        onValueChange={setSelectedValue}
-      />
-      <DatePickerSection
-        date={date}
-        show={show}
-        showDatepicker={showDatepicker}
-        onChangeDate={onChangeDate}
-      />
-      <RadioButtonSection
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-      />
-      <ButtonSection />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text style={styles.title}>Exame Final</Text>
+
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}>Data: {date ? date.toLocaleDateString() : "Selecionar Data"}</Text>
+          <TouchableOpacity onPress={showDatepicker} style={styles.dateInput}>
+            <Text style={styles.dateText}>Selecionar Data</Text>
+          </TouchableOpacity>
+          {show && (
+            <DateTimePicker
+              value={date || new Date()}
+              mode="date"
+              display="default"
+              onChange={onChangeDate}
+            />
+          )}
+        </View>
+
+        <View style={styles.cardContainer}>
+          <TouchableOpacity
+            style={[styles.card, approved && styles.cardApproved]}
+            onPress={handleApprovedToggle}
+          >
+            <Text style={styles.cardText}>Aprovado</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.card, rejected && styles.cardRejected]}
+            onPress={handleRejectedToggle}
+          >
+            <Text style={styles.cardText}>Reprovado</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleBack}>
+            <Text style={styles.buttonText}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
 
-// Componente para o título
-const Header: React.FC = () => (
-  <View>
-    <Text style={styles.title}>Exame Final</Text>
-  </View>
-);
-
-// Componente para o Picker
-interface PickerSectionProps {
-  selectedValue: string;
-  onValueChange: (value: string) => void;
-}
-
-const PickerSection: React.FC<PickerSectionProps> = ({
-  selectedValue,
-  onValueChange,
-}) => (
-  <View style={styles.pickerContainer}>
-    <Picker
-      selectedValue={selectedValue}
-      style={styles.picker}
-      onValueChange={onValueChange}
-    >
-      <Picker.Item label="Selecione" value="" />
-      <Picker.Item label="Opção 1" value="opcao1" />
-      <Picker.Item label="Opção 2" value="opcao2" />
-      <Picker.Item label="Opção 3" value="opcao3" />
-    </Picker>
-  </View>
-);
-
-// Componente para o DatePicker
-interface DatePickerSectionProps {
-  date: Date | undefined;
-  show: boolean;
-  showDatepicker: () => void;
-  onChangeDate: (event: any, selectedDate?: Date) => void;
-}
-
-const DatePickerSection: React.FC<DatePickerSectionProps> = ({
-  date,
-  show,
-  showDatepicker,
-  onChangeDate,
-}) => (
-  <>
-    <TouchableOpacity onPress={showDatepicker} style={styles.dateInput}>
-      <Text style={styles.dateText}>
-        {date
-          ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-          : "Selecionar Data"}
-      </Text>
-    </TouchableOpacity>
-    {show && (
-      <DateTimePicker
-        value={date || new Date()}
-        mode="date"
-        display="default"
-        onChange={onChangeDate}
-      />
-    )}
-  </>
-);
-
-// Componente para os botões de rádio
-interface RadioButtonSectionProps {
-  selectedOption: string;
-  setSelectedOption: (value: string) => void;
-}
-
-const RadioButtonSection: React.FC<RadioButtonSectionProps> = ({
-  selectedOption,
-  setSelectedOption,
-}) => (
-  <View style={styles.radioContainer}>
-    <CheckBox
-      title="Aprovado"
-      checked={selectedOption === "aprovado"}
-      onPress={() => setSelectedOption("aprovado")}
-      containerStyle={styles.checkboxContainerStyle}
-      textStyle={styles.checkboxText}
-      checkedColor="#FF7043"
-      checkedIcon="dot-circle-o"
-      uncheckedIcon="circle-o"
-    />
-    <CheckBox
-      title="Reprovado"
-      checked={selectedOption === "reprovado"}
-      onPress={() => setSelectedOption("reprovado")}
-      containerStyle={styles.checkboxContainerStyle}
-      textStyle={styles.checkboxText}
-      checkedColor="#FF7043"
-      uncheckedIcon="circle-o"
-      checkedIcon="dot-circle-o"
-    />
-  </View>
-);
-
-// Componente para os botões de ação
-const ButtonSection: React.FC = () => (
-  <View style={styles.buttonContainer}>
-    <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>Salvar</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>Voltar</Text>
-    </TouchableOpacity>
-  </View>
-);
-
-// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF5E1",
-    alignItems: "center",
-    justifyContent: "space-between",
     padding: 20,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   title: {
-    fontSize: 32,
-    textAlign: "center",
+    fontSize: 28,
     fontWeight: "bold",
     color: "#FF7043",
-    marginBottom: 5,
+    marginBottom: 20,
   },
-  pickerContainer: {
+  infoContainer: {
     width: "100%",
-    overflow: "hidden",
+    marginBottom: 20,
+    padding: 10,
+    alignItems: "center",
   },
-  picker: {
-    height: 50,
-    width: "100%",
-    color: "#FF7043",
+  infoText: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 10,
   },
   dateInput: {
-    width: "100%",
+    width: "80%",
     height: 50,
     backgroundColor: "#FFF",
     borderRadius: 8,
@@ -202,33 +156,47 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FF7043",
   },
-  radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  cardContainer: {
+    width: "100%",
     marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  checkboxContainerStyle: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
+  card: {
+    width: "48%",
+    padding: 15,
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#FF7043",
   },
-  checkboxText: {
+  cardApproved: {
+    backgroundColor: "#DFF0D8",
+    borderColor: "#3C763D",
+  },
+  cardRejected: {
+    backgroundColor: "#F2DEDE",
+    borderColor: "#A94442",
+  },
+  cardText: {
     fontSize: 18,
-    color: "#FF7043",
     fontWeight: "bold",
+    color: "#FF7043",
   },
   buttonContainer: {
     width: "100%",
-    justifyContent: "flex-end",
+    alignItems: "center",
   },
   button: {
-    width: "100%",
+    width: "80%",
     height: 50,
     backgroundColor: "#FF7043",
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   buttonText: {
     color: "#FFF",
