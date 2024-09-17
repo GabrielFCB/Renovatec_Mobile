@@ -1,31 +1,31 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationMontagem'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationExam'>;
 
-const ConfirmationMontagem: React.FC<Props> = ({ route, navigation }) => {
-  const { status, orderNumber, assemblyId } = route.params;
+const ConfirmationExam: React.FC<Props> = ({ route, navigation }) => {
+  const { status, orderNumber, tireId } = route.params;
 
-  const handleNewAssembly = () => {
-    navigation.navigate('Buttons');  // Navega para a tela ButtonScreen
+  const handleNewExam = () => {
+    navigation.navigate('Buttons');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação da Montagem</Text>
+      <Text style={styles.title}>Confirmação do Exame</Text>
 
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
-        <Text style={styles.infoText}>ID da Montagem: {assemblyId}</Text>
+        <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
-        <Text style={styles.buttonText}>Nova Montagem</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewExam}>
+        <Text style={styles.buttonText}>Novo Exame</Text>
       </TouchableOpacity>
     </View>
   );
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationMontagem;
+export default ConfirmationExam;
