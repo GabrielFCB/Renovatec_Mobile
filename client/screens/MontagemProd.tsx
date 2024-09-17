@@ -18,14 +18,20 @@ const CheckboxComponent: React.FunctionComponent<
 
   const handleSave = () => {
     const status = check ? "approved" : "rejected"; // Status baseado no checkbox
+<<<<<<< HEAD:screens/MontagemProd.tsx
     const orderNumber = "12345"; // Exemplo de número do pedido
     const assemblyId = "67890"; // Exemplo de ID da montagem
+=======
+>>>>>>> main:client/screens/MontagemProd.tsx
 
     // Navegar para a tela ConfirmationMontagem passando os parâmetros corretos
     navigation.navigate("ConfirmationMontagem", {
       status,
+<<<<<<< HEAD:screens/MontagemProd.tsx
       orderNumber,
       assemblyId,
+=======
+>>>>>>> main:client/screens/MontagemProd.tsx
     });
   };
 

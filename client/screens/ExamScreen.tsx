@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import Toast from 'react-native-toast-message'; // Importe o Toast
 
 type RootStackParamList = {
   ExamScreen: undefined;
@@ -43,7 +44,11 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleSave = () => {
     if (!approved && !rejected) {
-      alert('Por favor, selecione uma opção.');
+      Toast.show({
+        type: 'error',
+        text1: 'Campos obrigatórios',
+        text2: 'Por favor, selecione uma opção (Aprovado ou Reprovado).',
+      });
     } else {
       const status = approved ? 'approved' : 'rejected';
       const orderNumber = "12345"; 
@@ -58,7 +63,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleBack = () => {
-    alert('Voltando...');
+    navigation.goBack();
   };
 
   return (
