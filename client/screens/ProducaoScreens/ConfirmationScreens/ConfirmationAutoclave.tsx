@@ -1,31 +1,29 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationEscareacaoScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationAutoclave'>;
 
-const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { status, orderNumber, tireId } = route.params;
+const ConfirmationAutoclave: React.FC<Props> = ({ route, navigation }) => {
+  const { selectedValue, position, load } = route.params;
 
-  const handleNewEscareacao = () => {
-    navigation.navigate('Buttons');
+  const handleNewAssembly = () => {
+    navigation.navigate('Buttons'); 
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação da Escareação</Text>
+      <Text style={styles.title}>Confirmação Autoclave</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
-        <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
-        <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
-          Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
-        </Text>
+        <Text style={styles.infoText}>Autoclave Selecionada: {selectedValue}</Text>
+        <Text style={styles.infoText}>Posição: {position}</Text>
+        <Text style={styles.infoText}>Carga: {load}</Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewEscareacao}>
-        <Text style={styles.buttonText}>Nova Escareação</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
+        <Text style={styles.buttonText}>Nova Autoclave</Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,7 +32,7 @@ const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) =>
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFF5E1',
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -59,10 +57,6 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 10,
   },
-  statusText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   approved: {
     color: '#3C763D',
   },
@@ -84,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationEscareacaoScreen;
+export default ConfirmationAutoclave;

@@ -1,29 +1,31 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationExFinal'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationMontagem'>;
 
-const ConfirmationExFinal: React.FC<Props> = ({ route, navigation }) => {
-  const { status, date } = route.params;
+const ConfirmationMontagem: React.FC<Props> = ({ route, navigation }) => {
+  const { status, orderNumber, assemblyId } = route.params;
 
-  const handlenewEF = () => {
-    navigation.navigate('Buttons');
+  const handleNewAssembly = () => {
+    navigation.navigate('Buttons');  // Navega para a tela ButtonScreen
   };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação da Raspa</Text>
+      <Text style={styles.title}>Confirmação da Montagem</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Data: {date}</Text>
+        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
+        <Text style={styles.infoText}>ID da Montagem: {assemblyId}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handlenewEF}>
-        <Text style={styles.buttonText}>Novo Exame Final</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
+        <Text style={styles.buttonText}>Nova Montagem</Text>
       </TouchableOpacity>
     </View>
   );
@@ -32,7 +34,7 @@ const ConfirmationExFinal: React.FC<Props> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E1',
+    backgroundColor: '#F9F9F9',
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -82,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationExFinal;
+export default ConfirmationMontagem;

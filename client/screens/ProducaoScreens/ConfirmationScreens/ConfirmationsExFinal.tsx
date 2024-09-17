@@ -1,29 +1,29 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationAutoclave'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationExFinal'>;
 
-const ConfirmationAutoclave: React.FC<Props> = ({ route, navigation }) => {
-  const { selectedValue, position, load } = route.params;
+const ConfirmationExFinal: React.FC<Props> = ({ route, navigation }) => {
+  const { status, date } = route.params;
 
-  const handleNewAssembly = () => {
-    navigation.navigate('Buttons'); 
+  const handlenewEF = () => {
+    navigation.navigate('Buttons');
   };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação Autoclave</Text>
+      <Text style={styles.title}>Confirmação da Raspa</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Autoclave Selecionada: {selectedValue}</Text>
-        <Text style={styles.infoText}>Posição: {position}</Text>
-        <Text style={styles.infoText}>Carga: {load}</Text>
+        <Text style={styles.infoText}>Data: {date}</Text>
+        <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
+          Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
+        </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
-        <Text style={styles.buttonText}>Nova Autoclave</Text>
+      <TouchableOpacity style={styles.button} onPress={handlenewEF}>
+        <Text style={styles.buttonText}>Novo Exame Final</Text>
       </TouchableOpacity>
     </View>
   );
@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 10,
   },
+  statusText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   approved: {
     color: '#3C763D',
   },
@@ -78,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationAutoclave;
+export default ConfirmationExFinal;
