@@ -23,7 +23,7 @@ const ConfirmationExFinal: React.FC<Props> = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handlenewEF}>
-        <Text style={styles.buttonText}>Nova Raspa</Text>
+        <Text style={styles.buttonText}>Novo Exame Final</Text>
       </TouchableOpacity>
     </View>
   );
