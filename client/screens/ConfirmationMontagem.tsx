@@ -3,28 +3,29 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationRaspaScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationMontagem'>;
 
-const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { status, width, perimeter } = route.params;
+const ConfirmationMontagem: React.FC<Props> = ({ route, navigation }) => {
+  const { status, orderNumber, assemblyId } = route.params;
 
-  const handleNewRaspa = () => {
-    navigation.navigate('Buttons');
+  const handleNewAssembly = () => {
+    navigation.navigate('Buttons');  // Navega para a tela ButtonScreen
   };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação da Raspa</Text>
+      <Text style={styles.title}>Confirmação da Montagem</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Largura: {width}</Text>
-        <Text style={styles.infoText}>Perímetro: {perimeter}</Text>
+        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
+        <Text style={styles.infoText}>ID da Montagem: {assemblyId}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewRaspa}>
-        <Text style={styles.buttonText}>Nova Raspa</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
+        <Text style={styles.buttonText}>Nova Montagem</Text>
       </TouchableOpacity>
     </View>
   );
@@ -83,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationRaspaScreen;
+export default ConfirmationMontagem;

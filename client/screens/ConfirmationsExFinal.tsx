@@ -3,12 +3,12 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationRaspaScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationExFinal'>;
 
-const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { status, width, perimeter } = route.params;
+const ConfirmationExFinal: React.FC<Props> = ({ route, navigation }) => {
+  const { status, date } = route.params;
 
-  const handleNewRaspa = () => {
+  const handlenewEF = () => {
     navigation.navigate('Buttons');
   };
   return (
@@ -16,15 +16,14 @@ const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
       <Text style={styles.title}>Confirmação da Raspa</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Largura: {width}</Text>
-        <Text style={styles.infoText}>Perímetro: {perimeter}</Text>
+        <Text style={styles.infoText}>Data: {date}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewRaspa}>
-        <Text style={styles.buttonText}>Nova Raspa</Text>
+      <TouchableOpacity style={styles.button} onPress={handlenewEF}>
+        <Text style={styles.buttonText}>Novo Exame Final</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +32,7 @@ const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFF5E1',
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -83,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationRaspaScreen;
+export default ConfirmationExFinal;
