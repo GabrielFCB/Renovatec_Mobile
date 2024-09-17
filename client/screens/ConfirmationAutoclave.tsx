@@ -23,7 +23,7 @@ const ConfirmationAutoclave: React.FC<Props> = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
-        <Text style={styles.buttonText}>Nova Montagem</Text>
+        <Text style={styles.buttonText}>Nova Autoclave</Text>
       </TouchableOpacity>
     </View>
   );
