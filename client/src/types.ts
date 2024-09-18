@@ -1,14 +1,21 @@
 export type RootStackParamList = {
   Login: undefined;
   Menu: undefined;
-  Producao: undefined;
   SenhaReset: undefined;
   Buttons: undefined;
   ExamScreen: undefined;
-  ConfirmationExam: { status: string; orderNumber: string; tireId: string };
   RaspaScreen: undefined; 
+  EscareacaoScreen: undefined;
+  ProducaoScreen:undefined;
+  ConfirmationExam: { status: string; orderNumber: string; tireId: string };
+  AplicarColaScreen: undefined;
+  Orbicushion: undefined;
+  AutoclaveProd: undefined;
+  ConfirmationAutoclave: { selectedValue: string; position: string; load: string; }; 
+  MontagemProd: undefined;
+  ConfirmationEscareacaoScreen: { status: string; orderNumber: string; tireId: string };
   ConfirmationRaspaScreen: { status: string; width: string; perimeter: string }; 
   AplicarBandaScreen: { status: string; width: string; perimeter: string };
-  Orbicushion: undefined
-  AplicarColaScreen: undefined
+  ExameFinalProd: undefined;
+  ConfirmationExFinal: { status: string; date: string };
 };

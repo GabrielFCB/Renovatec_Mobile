@@ -1,31 +1,30 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationExam'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationRaspaScreen'>;
 
-const ConfirmationExam: React.FC<Props> = ({ route, navigation }) => {
-  const { status, orderNumber, tireId } = route.params;
+const ConfirmationRaspaScreen: React.FC<Props> = ({ route, navigation }) => {
+  const { status, width, perimeter } = route.params;
 
-  const handleNewExam = () => {
-    navigation.navigate('ExamScreen');
+  const handleNewRaspa = () => {
+    navigation.navigate('Buttons');
   };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação do Exame</Text>
+      <Text style={styles.title}>Confirmação da Raspa</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
-        <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
+        <Text style={styles.infoText}>Largura: {width}</Text>
+        <Text style={styles.infoText}>Perímetro: {perimeter}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewExam}>
-        <Text style={styles.buttonText}>Novo Exame</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewRaspa}>
+        <Text style={styles.buttonText}>Nova Raspa</Text>
       </TouchableOpacity>
     </View>
   );
@@ -84,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationExam;
+export default ConfirmationRaspaScreen;
