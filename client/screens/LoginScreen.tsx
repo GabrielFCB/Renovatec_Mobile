@@ -1,6 +1,45 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { supabase } from '../supabase';
+import { Alert } from 'react-native';
+import { useAuth } from '../context/Auth';
 
 export default function LoginScreen({ navigation }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false)
+    const { session, setSession } = useAuth();
+
+    async function signInWithEmail() {
+        setLoading(true)
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: username,
+            password: password,
+        })
+
+        if (error) {
+            Alert.alert(error.message);
+        } else {
+            setSession(data.session);
+        }
+        setLoading(false)
+    }
+
+    async function signUpWithEmail() {
+        setLoading(true)
+        const {
+            data: { session },
+            error,
+        } = await supabase.auth.signUp({
+            email: username,
+            password: password,
+        })
+
+        if (error) Alert.alert(error.message)
+        if (!session) Alert.alert('Please check your inbox for email verification!')
+        setLoading(false)
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Renovatec</Text>
@@ -9,6 +48,8 @@ export default function LoginScreen({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder="E-mail"
+                value={username}
+                onChangeText={setUsername}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -17,6 +58,8 @@ export default function LoginScreen({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder="Senha"
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry={true}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -24,9 +67,16 @@ export default function LoginScreen({ navigation }) {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Menu")}
+                onPress={() => signInWithEmail()}
             >
                 <Text style={styles.buttonText}>Entrar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => signUpWithEmail()}
+            >
+                <Text style={styles.buttonText}>Cadastrar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
