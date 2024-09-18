@@ -1,6 +1,20 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { supabase } from '../supabase';
+
 
 export default function MenuScreen({ navigation }) {
+
+    async function signOut() {
+
+        const { error } = await supabase.auth.signOut()
+
+        if (error) {
+            Alert.alert(error.message);
+        }
+
+    }
+
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Renovatec</Text>
@@ -11,6 +25,13 @@ export default function MenuScreen({ navigation }) {
                 onPress={() => navigation.navigate("Buttons")}
             >
                 <Text style={styles.buttonText}>Iniciar Produção</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => signOut()}
+            >
+                <Text style={styles.buttonText}>Sair</Text>
             </TouchableOpacity>
 
         </View>
