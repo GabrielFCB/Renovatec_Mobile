@@ -29,9 +29,9 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                         style={styles.button}
                         onPress={() => {
                             if (name === 'Exame Inicial') {
-                                navigation.navigate('ExamScreen');
+                                navigation.navigate('VisualizarExameInicial');
                             } else if (name === 'Raspa') {
-                                navigation.navigate('RaspaScreen');
+                                navigation.navigate('VisualizarRaspa');
                             } else if (name === 'Aplicação de banda') {
                                 navigation.navigate('AplicarBandaScreen')
                             } else if (name === 'Aplicação de cola') {

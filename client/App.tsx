@@ -1,11 +1,9 @@
-import React, { createContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-//import { StatusBar } from "expo-status-bar";
-import { RootStackParamList } from './src/types';
+import React, { createContext } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { RootStackParamList } from "./src/types";
 import LoginScreen from "./screens/LoginScreen";
 import MenuScreen from "./screens/MenuScreen";
-// import ProducaoScreen from "./screens/ProducaoScreen";
 import SenhaResetScreen from "./screens/SenhaResetScreen";
 import MontagemProd from "./screens/ProducaoScreens/Montagem/MontagemProd";
 import AutoclaveProd from "./screens/ProducaoScreens/Autoclave/AutoclaveProd";
@@ -15,7 +13,9 @@ import ConfirmationExFinal from "./screens/ProducaoScreens/Exame_Final/Confirmat
 import ButtonScreen from "./screens/ProducaoScreens/ButtonScreen";
 import ExamScreen from "./screens/ProducaoScreens/Exame_Inicial/ExamScreen";
 import ConfirmationExam from "./screens/ProducaoScreens/Exame_Inicial/ConfirmationExam";
+import VisualizarExameInicial from "./screens/ProducaoScreens/Exame_Inicial/VisualizarExameInicial";
 import RaspaScreen from "./screens/ProducaoScreens/Raspa/RaspaScreen";
+import VisualizarRaspa from "./screens/ProducaoScreens/Raspa/VisualizarRaspa";
 import ConfirmationRaspaScreen from "./screens/ProducaoScreens/Raspa/ConfirmationRaspaScreen";
 import AplicarBandaScreen from "./screens/ProducaoScreens/Aplicacao_de_Banda/AplicarBandaScreen";
 import AplicarColaScreen from "./screens/ProducaoScreens/Aplicacao_de_Cola/AplicarColaScreen";
@@ -23,10 +23,9 @@ import Orbicushion from "./screens/ProducaoScreens/Orbicushion/Orbicushion";
 import EscareacaoScreen from "./screens/ProducaoScreens/Escareacao/EscareacaoScreen";
 import Toast from "react-native-toast-message";
 import ConfirmationEscareacaoScreen from "./screens/ProducaoScreens/Escareacao/ConfirmationEscareacaoScreen";
-import AuthProvider, { useAuth } from './context/Auth';
+import AuthProvider, { useAuth } from "./context/Auth";
 
 const Stack = createStackNavigator<RootStackParamList>();
-
 
 const App = () => {
   return (
@@ -47,7 +46,6 @@ const AuthStack = () => {
       {session ? (
         <>
           <Stack.Screen name="Menu" component={MenuScreen} />
-          {/* <Stack.Screen name="Producao" component={ProducaoScreen} /> */}
           <Stack.Screen name="MontagemProd" component={MontagemProd} />
           <Stack.Screen name="AutoclaveProd" component={AutoclaveProd} />
           <Stack.Screen name="ExameFinalProd" component={ExameFinalProd} />
@@ -87,6 +85,11 @@ const AuthStack = () => {
             options={{ title: "Confirmação" }}
           />
           <Stack.Screen
+            name="VisualizarExameInicial"
+            component={VisualizarExameInicial}
+            options={{ title: "Visualizar os pneus que no Exame Inicial" }}
+          />
+          <Stack.Screen
             name="ConfirmationEscareacaoScreen"
             component={ConfirmationEscareacaoScreen}
             options={{ title: "Confirmação da Escareação" }}
@@ -95,6 +98,11 @@ const AuthStack = () => {
             name="RaspaScreen"
             component={RaspaScreen}
             options={{ title: "Raspa" }}
+          />
+          <Stack.Screen
+            name="VisualizarRaspa"
+            component={VisualizarRaspa}
+            options={{ title: "VisualizarRaspa" }}
           />
           <Stack.Screen
             name="ConfirmationRaspaScreen"
