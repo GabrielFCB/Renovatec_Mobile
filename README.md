@@ -1,3 +1,4 @@
-# Renovatec_Mobilee
+# Renovatec_Mobile
 
-npx expo start / npm start
+- Entra na pasta
+- npm install
