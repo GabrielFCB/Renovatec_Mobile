@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { supabase } from '../../../supabase';  // Certifique-se de ajustar o caminho correto
+import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import Toast from 'react-native-toast-message'; // Importe o Toast
 
 type RootStackParamList = {
-  ExamScreen: undefined;
-  ConfirmationExam: {
-    status: string;
-    orderNumber: string;
-    tireId: string;
-  };
+  ExamScreen: { tireId: string };
+  ConfirmationExam: { status: string; tireId: string };
 };
 
 type ExamScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ExamScreen'>;
@@ -21,12 +18,53 @@ type Props = {
   route: ExamScreenRouteProp;
 };
 
-const ExamScreen: React.FC<Props> = ({ navigation }) => {
+const ExamScreen: React.FC<Props> = ({ navigation, route }) => {
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const [employeeName, setEmployeeName] = useState('');  // Inicializa como string vazia
+  const [loading, setLoading] = useState(true);  // Adiciona estado de loading
+  const tireId = route.params.tireId;
 
-  const employeeName = "João Silva";
   const currentDate = new Date().toLocaleDateString();
+
+  useEffect(() => {
+    // Função para buscar o nome do vendedor baseado no auth_ID do usuário logado
+    const fetchEmployeeName = async () => {
+      try {
+        // Obtém o usuário autenticado
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        if (userError || !userData?.user?.id) {
+          throw userError || new Error('Usuário não autenticado');
+        }
+
+        const authID = userData.user.id;  // Obtém o auth_ID (ID do usuário no Supabase)
+
+        // Agora, buscar na tabela de Vendedores o nome baseado no auth_ID
+        const { data, error } = await supabase
+          .from('Vendedor')  // Supondo que a tabela se chame 'Vendedor'
+          .select('nome')    // Buscando o campo 'nome'
+          .eq('auth_ID', authID);  // Buscando pelo auth_ID do usuário
+
+        if (error) {
+          throw error;
+        }
+
+        if (data && data.length > 0) {
+          setEmployeeName(data[0].nome);  // Define o nome do vendedor
+        } else {
+          setEmployeeName('Vendedor não encontrado');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar vendedor:', error);
+        setEmployeeName('Erro ao carregar o nome do vendedor');
+      } finally {
+        setLoading(false);  // Desativa o loading
+      }
+    };
+
+    fetchEmployeeName();
+  }, []);
 
   const handleApprovedToggle = () => {
     if (!approved) {
@@ -42,7 +80,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!approved && !rejected) {
       Toast.show({
         type: 'error',
@@ -51,20 +89,37 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
       });
     } else {
       const status = approved ? 'approved' : 'rejected';
-      const orderNumber = "12345"; 
-      const tireId = "67890"; 
 
-      navigation.navigate('ConfirmationExam', {
-        status,
-        orderNumber,
-        tireId,
-      });
+      const { error } = await supabase
+        .from('Producao')
+        .update({
+          EIdata: new Date().toISOString(),
+          EIAproRepro: approved ? true : false,
+        })
+        .eq('ID_Pneu', tireId);
+
+      if (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao salvar',
+          text2: 'Não foi possível salvar os dados.',
+        });
+        console.error('Erro ao atualizar produção:', error);
+      } else {
+        navigation.navigate('ConfirmationExam', {
+          status,
+          tireId,
+        });
+      }
     }
   };
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
+  if (loading) {
+    return (
+      <View style={styles.container}>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -95,7 +150,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={handleSave}>
             <Text style={styles.buttonText}>Salvar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleBack}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
             <Text style={styles.buttonText}>Voltar</Text>
           </TouchableOpacity>
         </View>
