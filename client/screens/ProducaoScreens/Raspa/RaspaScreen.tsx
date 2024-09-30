@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../src/types';
+import { supabase } from '../../../supabase';
+import { RootStackParamList } from '../../../src/types';
 import Toast from 'react-native-toast-message';
 
 type Props = StackScreenProps<RootStackParamList, 'RaspaScreen'>;
 
-const RaspaScreen: React.FC<Props> = ({ navigation }) => {
+const RaspaScreen: React.FC<Props> = ({ navigation, route }) => {
   const [width, setWidth] = useState('');
   const [perimeter, setPerimeter] = useState('');
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const tireId = route.params.tireId;
 
   const currentDate = new Date().toLocaleDateString();
 
@@ -28,7 +31,7 @@ const RaspaScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleComplete = () => {
+  const handleSave = async () => {
     if (!width || !perimeter || (!approved && !rejected)) {
       Toast.show({
         type: 'error',
@@ -36,9 +39,65 @@ const RaspaScreen: React.FC<Props> = ({ navigation }) => {
         text2: 'Por favor, preencha todos os campos obrigatórios!',
       });
     } else {
-      navigation.navigate('ConfirmationRaspaScreen', { width, perimeter, status: approved ? 'approved' : 'rejected' });
+      const status = approved ? 'approved' : 'rejected';
+
+      // Atualizar os dados de Raspa na tabela Producao
+      const { error: updateProducaoError } = await supabase
+        .from('Producao')
+        .update({
+          Rasdata: new Date().toISOString(),
+          RasAproRepro: approved ? true : false,
+          RasLargura: width,
+          RasPerimetro: perimeter,
+        })
+        .eq('ID_Pneu', tireId);
+
+      if (updateProducaoError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao salvar',
+          text2: 'Não foi possível salvar os dados de Raspa.',
+        });
+        console.error('Erro ao atualizar dados de Raspa:', updateProducaoError);
+        return;
+      }
+
+      // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
+      const { error: updatePneuError } = await supabase
+        .from('Pneu')
+        .update({ Etapa_Producao: 'Escareacao' })  // Substitua 'Escareacao' pela fase correta
+        .eq('ID_Pneu', tireId);
+
+      if (updatePneuError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao atualizar pneu',
+          text2: 'Não foi possível atualizar a etapa de produção.',
+        });
+        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
+        return;
+      }
+
+      // Navegar para a tela de confirmação após salvar os dados com sucesso
+      navigation.navigate('ConfirmationRaspaScreen', {
+        width,
+        perimeter,
+        status,
+      });
     }
   };
+
+  useEffect(() => {
+    setLoading(false); // Simula um carregamento inicial, remova ou ajuste conforme sua lógica.
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -65,7 +124,7 @@ const RaspaScreen: React.FC<Props> = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Campo obrigatório <Text style={styles.required}>*</Text></Text>
+          <Text style={styles.label}>Largura do pneu <Text style={styles.required}>*</Text></Text>
           <TextInput
             style={[styles.input, !width && styles.inputError]}
             placeholder="Informe a largura do pneu"
@@ -76,10 +135,10 @@ const RaspaScreen: React.FC<Props> = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Campo obrigatório <Text style={styles.required}>*</Text></Text>
+          <Text style={styles.label}>Perímetro do pneu <Text style={styles.required}>*</Text></Text>
           <TextInput
             style={[styles.input, !perimeter && styles.inputError]}
-            placeholder="Informe o perímetro do Pneu"
+            placeholder="Informe o perímetro do pneu"
             value={perimeter}
             onChangeText={setPerimeter}
             keyboardType="numeric"
@@ -87,7 +146,7 @@ const RaspaScreen: React.FC<Props> = ({ navigation }) => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleComplete}>
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
             <Text style={styles.buttonText}>Concluído</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>

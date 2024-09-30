@@ -4,8 +4,9 @@ export type RootStackParamList = {
   Menu: undefined;
   SenhaReset: undefined;
   Buttons: undefined;
-  ExamScreen: { tireId: string };  // Passa tireId como string
-  RaspaScreen: undefined;
+  ExamScreen: { tireId: string };  
+  RaspaScreen: { tireId: string };
+  VisualizarRaspa: undefined;
   EscareacaoScreen: undefined;
   ProducaoScreen: undefined;
   ConfirmationExam: { status: string; orderNumber: string; tireId: string; ID_Pneu: bigint };

@@ -11,16 +11,16 @@ import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarExameInicialNavigationProp = StackNavigationProp<
+type VisualizarRaspaNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "ExamScreen"
+  "RaspaScreen"
 >;
 
 type Props = {
-  navigation: VisualizarExameInicialNavigationProp;
+  navigation: VisualizarRaspaNavigationProp;
 };
 
-const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
+const VisualizarRaspa: React.FC<Props> = ({ navigation }) => {
   const [pneuData, setPneuData] = useState<PneuItem[]>([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
       const { data, error } = await supabase
         .from("Pneu")
         .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
-        .eq("Etapa_Producao", "ExameInicial");
+        .eq("Etapa_Producao", "Raspa");
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -48,7 +48,7 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
       <TouchableOpacity
         style={styles.examButton}
         onPress={() =>
-          navigation.navigate("ExamScreen", { tireId: item.ID_Pneu.toString() })
+          navigation.navigate("RaspaScreen", { tireId: item.ID_Pneu.toString() })
         }
       >
         <Text style={styles.examButtonText}>X</Text>
@@ -58,7 +58,7 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pneus - Exame Inicial</Text>
+      <Text style={styles.title}>Pneus - Raspa</Text>
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
   },
   examButton: {
     backgroundColor: "#FF7043",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VisualizarExameInicial;
+export default VisualizarRaspa;

@@ -90,7 +90,8 @@ const ExamScreen: React.FC<Props> = ({ navigation, route }) => {
     } else {
       const status = approved ? 'approved' : 'rejected';
 
-      const { error } = await supabase
+      // Atualizar os dados do exame na tabela 'Producao'
+      const { error: updateProducaoError } = await supabase
         .from('Producao')
         .update({
           EIdata: new Date().toISOString(),
@@ -98,25 +99,44 @@ const ExamScreen: React.FC<Props> = ({ navigation, route }) => {
         })
         .eq('ID_Pneu', tireId);
 
-      if (error) {
+      if (updateProducaoError) {
         Toast.show({
           type: 'error',
           text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados.',
+          text2: 'Não foi possível salvar os dados de produção.',
         });
-        console.error('Erro ao atualizar produção:', error);
-      } else {
-        navigation.navigate('ConfirmationExam', {
-          status,
-          tireId,
-        });
+        console.error('Erro ao atualizar produção:', updateProducaoError);
+        return; // Parar execução caso ocorra erro
       }
+
+      // Atualizar a Etapa_Producao na tabela 'Pneu' para 'Raspa'
+      const { error: updatePneuError } = await supabase
+        .from('Pneu')
+        .update({ Etapa_Producao: 'Raspa' })
+        .eq('ID_Pneu', tireId);
+
+      if (updatePneuError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao atualizar pneu',
+          text2: 'Não foi possível atualizar a etapa de produção.',
+        });
+        console.error('Erro ao atualizar a Etapa_Producao:', updatePneuError);
+        return; // Parar execução caso ocorra erro
+      }
+
+      // Navegar para a tela de confirmação após o sucesso
+      navigation.navigate('ConfirmationExam', {
+        status,
+        tireId,
+      });
     }
   };
 
   if (loading) {
     return (
       <View style={styles.container}>
+        <Text>Carregando...</Text>
       </View>
     );
   }

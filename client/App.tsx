@@ -15,6 +15,7 @@ import ExamScreen from "./screens/ProducaoScreens/Exame_Inicial/ExamScreen";
 import ConfirmationExam from "./screens/ProducaoScreens/Exame_Inicial/ConfirmationExam";
 import VisualizarExameInicial from "./screens/ProducaoScreens/Exame_Inicial/VisualizarExameInicial";
 import RaspaScreen from "./screens/ProducaoScreens/Raspa/RaspaScreen";
+import VisualizarRaspa from "./screens/ProducaoScreens/Raspa/VisualizarRaspa";
 import ConfirmationRaspaScreen from "./screens/ProducaoScreens/Raspa/ConfirmationRaspaScreen";
 import AplicarBandaScreen from "./screens/ProducaoScreens/Aplicacao_de_Banda/AplicarBandaScreen";
 import AplicarColaScreen from "./screens/ProducaoScreens/Aplicacao_de_Cola/AplicarColaScreen";
@@ -97,6 +98,11 @@ const AuthStack = () => {
             name="RaspaScreen"
             component={RaspaScreen}
             options={{ title: "Raspa" }}
+          />
+          <Stack.Screen
+            name="VisualizarRaspa"
+            component={VisualizarRaspa}
+            options={{ title: "VisualizarRaspa" }}
           />
           <Stack.Screen
             name="ConfirmationRaspaScreen"
