@@ -1,26 +1,47 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { CheckBox } from "@rneui/themed";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../src/types";
+import React, { useState } from 'react';
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
-// Tipagem para garantir que a navegação está correta
-type NavigationProp = StackNavigationProp<RootStackParamList, "MontagemProd">;
+type RootStackParamList = {
+  MontagemProd: undefined;
+  Buttons: undefined;
+};
 
-const CheckboxComponent: React.FunctionComponent = () => {
-  const [check, setCheck] = useState(false);
-  const [showConfirmCard, setShowConfirmCard] = useState(false);
+type MontagemProdNavigationProp = StackNavigationProp<RootStackParamList, 'MontagemProd'>;
+type MontagemProdRouteProp = RouteProp<RootStackParamList, 'MontagemProd'>;
+
+type Props = {
+  navigation: MontagemProdNavigationProp;
+  route: MontagemProdRouteProp;
+};
+
+const MontagemProd: React.FC<Props> = ({ navigation }) => {
+  const [approved, setApproved] = useState(false);
+  const [rejected, setRejected] = useState(false);
   const [showNotDoneCard, setShowNotDoneCard] = useState(false);
-  const navigation = useNavigation<NavigationProp>();
+  const [showConfirmCard, setShowConfirmCard] = useState(false);
+
+  const handleApprovedToggle = () => {
+    setApproved(true);
+    setRejected(false);
+  };
+
+  const handleRejectedToggle = () => {
+    setRejected(true);
+    setApproved(false);
+  };
 
   const handleSave = () => {
-    if (check) {
+    if (!approved && !rejected) {
+      Toast.show({
+        type: 'error',
+        text1: 'Campos obrigatórios',
+        text2: 'Por favor, selecione uma opção (Aprovado ou Reprovado).',
+      });
+    } else if (approved) {
       setShowConfirmCard(true);
-      setTimeout(() => {
-        setShowConfirmCard(false);
-        navigation.navigate("Buttons"); // Navigate to the Buttons screen
-      }, 1000);
     } else {
       setShowNotDoneCard(true);
     }
@@ -28,41 +49,44 @@ const CheckboxComponent: React.FunctionComponent = () => {
 
   const handleNotDoneConfirm = () => {
     setShowNotDoneCard(false);
+    navigation.navigate('MontagemProd'); // Volta para a tela de MontagemProd
   };
 
   const handleConfirmCardConfirm = () => {
     setShowConfirmCard(false);
-    navigation.navigate("Buttons"); // Navigate to the Buttons screen
+    setTimeout(() => {
+      navigation.navigate('Buttons'); // Navega para a tela Buttons
+    }, 1000); // Exibe o card por 1 segundo antes de navegar
   };
 
-  const back = () => {
-    navigation.goBack();
+  const handleBack = () => {
+    navigation.navigate('Buttons'); // Navega de volta para a tela anterior
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Montagem</Text>
-        <Text style={styles.subtitle}>Inerlope e Envelope</Text>
-      </View>
+      <Text style={styles.title}>Montagem de Produto</Text>
 
-      <View style={styles.checkboxContainer}>
-        <CheckBox
-          title={check ? "FEITO!" : "NÃO FEITO!"}
-          checked={check}
-          onPress={() => setCheck(!check)}
-          containerStyle={styles.checkboxContainerStyle}
-          textStyle={styles.checkboxText}
-          checkedColor="#FF7043"
-          uncheckedColor="#FF7043"
-        />
+      <View style={styles.cardContainer}>
+        <TouchableOpacity
+          style={[styles.card, approved && styles.cardApproved]}
+          onPress={handleApprovedToggle}
+        >
+          <Text style={styles.cardText}>Aprovado</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.card, rejected && styles.cardRejected]}
+          onPress={handleRejectedToggle}
+        >
+          <Text style={styles.cardText}>Reprovado</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={back}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
           <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
       </View>
@@ -70,14 +94,16 @@ const CheckboxComponent: React.FunctionComponent = () => {
       {showNotDoneCard && (
         <View style={styles.overlay}>
           <View style={styles.notDoneCard}>
-            <TouchableOpacity style={styles.closeButton} onPress={handleNotDoneConfirm}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setShowNotDoneCard(false)}>
               <Text style={styles.closeButtonText}>X</Text>
             </TouchableOpacity>
             <Text style={styles.notDoneCardTitle}>Atenção!</Text>
             <Text style={styles.notDoneCardText}>A etapa não foi feita. Por favor, revise e complete a ação.</Text>
-            <TouchableOpacity style={styles.notDoneButton} onPress={handleNotDoneConfirm}>
-              <Text style={styles.notDoneButtonText}>Confirmar</Text>
-            </TouchableOpacity>
+            <View style={styles.notDoneButtonContainer}>
+              <TouchableOpacity style={styles.notDoneButton} onPress={handleNotDoneConfirm}>
+                <Text style={styles.notDoneButtonText}>Confirmar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       )}
@@ -99,57 +125,72 @@ const CheckboxComponent: React.FunctionComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF5E1",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#FFF5E1',
   },
   title: {
-    fontSize: 32,
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "#FF7043",
-    marginBottom: 5,
+    fontSize: 24,
+    marginBottom: 20,
+    color: '#FF7043',
+    fontWeight: 'bold',
   },
-  subtitle: {
-    fontSize: 22,
-    textAlign: "center",
-    fontWeight: "semibold",
-    color: "#FF7043",
-    marginTop: 0,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  cardContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
-  checkboxContainerStyle: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
+  card: {
+    width: '48%',
+    padding: 15,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#FF7043',
   },
-  checkboxText: {
+  cardApproved: {
+    backgroundColor: '#DFF0D8',
+    borderColor: '#3C763D',
+  },
+  cardRejected: {
+    backgroundColor: '#F2DEDE',
+    borderColor: '#A94442',
+  },
+  cardText: {
     fontSize: 18,
-    color: "#FF7043",
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    color: '#FF7043',
   },
   buttonContainer: {
-    width: "100%",
-    justifyContent: "flex-end",
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 20,
   },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#FF7043",
+  saveButton: {
+    width: '80%',
+    height: 40,
+    backgroundColor: '#FF7043',
     borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 10,
   },
+  backButton: {
+    width: '80%',
+    height: 40,
+    backgroundColor: '#FF7043',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonText: {
-    color: "#FFF",
-    fontSize: 18,
-    fontWeight: "bold",
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -195,6 +236,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  notDoneButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
   notDoneButton: {
     width: '100%',
     height: 50,
@@ -239,4 +285,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckboxComponent;
+export default MontagemProd;

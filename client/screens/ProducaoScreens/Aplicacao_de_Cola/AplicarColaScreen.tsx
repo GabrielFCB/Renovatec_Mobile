@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { CheckBox } from '@rneui/themed';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../src/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AplicarColaScreen'>;
 
 export default function AplicarColaScreen({ navigation }: Props) {
-    const [isChecked, setIsChecked] = useState(false);
+    const [approved, setApproved] = useState(false);
+    const [rejected, setRejected] = useState(false);
     const [showNotDoneCard, setShowNotDoneCard] = useState(false);
     const [showConfirmCard, setShowConfirmCard] = useState(false);
 
+    const handleApprovedToggle = () => {
+        setApproved(true);
+        setRejected(false);
+    };
+
+    const handleRejectedToggle = () => {
+        setRejected(true);
+        setApproved(false);
+    };
+
     const handleSave = () => {
-        if (isChecked) {
+        if (!approved && !rejected) {
+            Toast.show({
+                type: 'error',
+                text1: 'Campos obrigatórios',
+                text2: 'Por favor, selecione uma opção (Aprovado ou Reprovado).',
+            });
+        } else if (approved) {
             setShowConfirmCard(true);
-            setTimeout(() => {
-                setShowConfirmCard(false);
-                navigation.navigate('Buttons');
-            }, 1000); // Exibe o card por 1 segundo antes de navegar
         } else {
             setShowNotDoneCard(true);
         }
@@ -25,37 +38,52 @@ export default function AplicarColaScreen({ navigation }: Props) {
 
     const handleNotDoneConfirm = () => {
         setShowNotDoneCard(false);
+        navigation.navigate('AplicarColaScreen');
     };
 
     const handleConfirmCardConfirm = () => {
         setShowConfirmCard(false);
+        setTimeout(() => {
+            navigation.navigate('Buttons');
+        }, 1000);
+    };
+
+    const handleBack = () => {
         navigation.navigate('Buttons');
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Aplicação de Cola</Text>
-            
-            <View style={styles.checkboxContainer}>
-                <CheckBox
-                    title={isChecked ? 'FEITO!' : 'NÃO FEITO!'}
-                    checked={isChecked}
-                    onPress={() => setIsChecked(!isChecked)}
-                    containerStyle={styles.checkboxContainerStyle}
-                    textStyle={styles.checkboxText}
-                    checkedColor="#FF7043"
-                    uncheckedColor="#FF7043"
-                />
+
+            <View style={styles.cardContainer}>
+                <TouchableOpacity
+                    style={[styles.card, approved && styles.cardApproved]}
+                    onPress={handleApprovedToggle}
+                >
+                    <Text style={styles.cardText}>Aprovado</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.card, rejected && styles.cardRejected]}
+                    onPress={handleRejectedToggle}
+                >
+                    <Text style={styles.cardText}>Reprovado</Text>
+                </TouchableOpacity>
             </View>
-            
-            <TouchableOpacity style={styles.button} onPress={handleSave}>
-                <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                    <Text style={styles.buttonText}>Salvar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+                    <Text style={styles.buttonText}>Voltar</Text>
+                </TouchableOpacity>
+            </View>
 
             {showNotDoneCard && (
                 <View style={styles.overlay}>
                     <View style={styles.notDoneCard}>
-                        <TouchableOpacity style={styles.closeButton} onPress={handleNotDoneConfirm}>
+                        <TouchableOpacity style={styles.closeButton} onPress={() => setShowNotDoneCard(false)}>
                             <Text style={styles.closeButtonText}>X</Text>
                         </TouchableOpacity>
                         <Text style={styles.notDoneCardTitle}>Atenção!</Text>
@@ -95,44 +123,72 @@ const styles = StyleSheet.create({
         color: '#FF7043',
         fontWeight: 'bold',
     },
-    checkboxContainer: {
+    cardContainer: {
+        width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: 'space-between',
         marginBottom: 20,
     },
-    checkboxContainerStyle: {
-        backgroundColor: 'transparent',
-        borderWidth: 0,
+    card: {
+        width: '48%',
+        padding: 15,
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '#FF7043',
     },
-    checkboxText: {
+    cardApproved: {
+        backgroundColor: '#DFF0D8',
+        borderColor: '#3C763D',
+    },
+    cardRejected: {
+        backgroundColor: '#F2DEDE',
+        borderColor: '#A94442',
+    },
+    cardText: {
         fontSize: 18,
-        color: '#FF7043',
         fontWeight: 'bold',
+        color: '#FF7043',
     },
-    button: {
+    buttonContainer: {
         width: '100%',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    saveButton: {
+        width: '80%',
         height: 50,
         backgroundColor: '#FF7043',
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
+        marginBottom: 10,
+    },
+    backButton: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FF7043',
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText: {
         color: '#FFF',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Escurece a tela principal
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     notDoneCard: {
         width: '80%',
         padding: 16,
-        backgroundColor: '#E0E0E0', // Cor cinza mais suave
+        backgroundColor: '#E0E0E0',
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
@@ -184,7 +240,7 @@ const styles = StyleSheet.create({
     confirmCard: {
         width: '80%',
         padding: 16,
-        backgroundColor: '#DFF0D8', // Cor verde para confirmação
+        backgroundColor: '#DFF0D8',
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
