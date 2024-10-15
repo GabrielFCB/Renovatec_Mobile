@@ -3,18 +3,18 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationEscareacaoScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationAplicacaoDeCola'>;
 
-const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) => {
+const ConfirmationAplicarCola: React.FC<Props> = ({ route, navigation }) => {
   const { status, tireId } = route.params;
 
-  const handleNewEscareacao = () => {
+  const handleNewAplicacaoDeCola = () => {
     navigation.navigate('Buttons');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação da Escareação</Text>
+      <Text style={styles.title}>Confirmação da Aplicação de Cola</Text>
 
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
@@ -23,8 +23,8 @@ const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) =>
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewEscareacao}>
-        <Text style={styles.buttonText}>Nova Escareação</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewAplicacaoDeCola}>
+        <Text style={styles.buttonText}>Nova Aplicação de Cola</Text>
       </TouchableOpacity>
     </View>
   );
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationEscareacaoScreen;
+export default ConfirmationAplicarCola;

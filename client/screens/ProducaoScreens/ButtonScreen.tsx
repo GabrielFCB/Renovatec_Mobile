@@ -35,10 +35,10 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                             } else if (name === 'Aplicação de banda') {
                                 navigation.navigate('AplicarBandaScreen')
                             } else if (name === 'Aplicação de cola') {
-                                navigation.navigate('AplicarColaScreen')
+                                navigation.navigate('VisualizarAplicacaoDeCola')
                             } 
                             else if (name === 'Escareação') {
-                                navigation.navigate('EscareacaoScreen')
+                                navigation.navigate('VisualizarEscareacao')
                             } 
                             else if (name === 'Orbicushion') {
                                 navigation.navigate('Orbicushion')

@@ -4,23 +4,37 @@ export type RootStackParamList = {
   Menu: undefined;
   SenhaReset: undefined;
   Buttons: undefined;
-  ExamScreen: { tireId: string };  
+  ////Exame Inicial////
+  ExamScreen: { tireId: string };
+  VisualizarExameInicial: undefined;
+  ConfirmationExam: { status: string; orderNumber: string; tireId: string; ID_Pneu: bigint };
+  ////Raspa////
   RaspaScreen: { tireId: string };
   VisualizarRaspa: undefined;
-  EscareacaoScreen: undefined;
-  ProducaoScreen: undefined;
-  ConfirmationExam: { status: string; orderNumber: string; tireId: string; ID_Pneu: bigint };
-  VisualizarExameInicial: undefined;
-  AplicarColaScreen: undefined;
+  ConfirmationRaspaScreen: { status: string; width: string; perimeter: string };
+  ////Escareação////
+  EscareacaoScreen: { tireId: string; };  
+  VisualizarEscareacao: undefined;
+  ConfirmationEscareacaoScreen: { status: string; tireId: string };
+  ////Aplicacao de Cola////
+  AplicacaoDeColaScreen: { tireId: string; };  
+  VisualizarAplicacaoDeCola: undefined;
+  ConfirmationAplicacaoDeCola: { status: string; tireId: string };
+  ////Orbicushion////
   Orbicushion: undefined;
+  ////Corte de Banda////
+
+  ////Aplicacao de Banda////
+  AplicarBandaScreen: { status: string; width: string; perimeter: string };
+  ////Montagem////
+  MontagemProd: undefined;
+  ////Autoclave////
   AutoclaveProd: undefined;
   ConfirmationAutoclave: { selectedValue: string; position: string; load: string };
-  MontagemProd: undefined;
-  ConfirmationEscareacaoScreen: { status: string; orderNumber: string; tireId: string };
-  ConfirmationRaspaScreen: { status: string; width: string; perimeter: string };
-  AplicarBandaScreen: { status: string; width: string; perimeter: string };
+  ////Exame Final////
   ExameFinalProd: undefined;
   ConfirmationExFinal: { status: string; date: string };
+
 };
 
 // Definição do tipo para os dados da tabela Pneu
