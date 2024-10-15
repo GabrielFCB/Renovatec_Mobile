@@ -6,7 +6,7 @@ import { RootStackParamList } from '../../../src/types';
 type Props = StackScreenProps<RootStackParamList, 'ConfirmationEscareacaoScreen'>;
 
 const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { status, orderNumber, tireId } = route.params;
+  const { status, tireId } = route.params;
 
   const handleNewEscareacao = () => {
     navigation.navigate('Buttons');
@@ -17,7 +17,6 @@ const ConfirmationEscareacaoScreen: React.FC<Props> = ({ route, navigation }) =>
       <Text style={styles.title}>Confirmação da Escareação</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
         <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
