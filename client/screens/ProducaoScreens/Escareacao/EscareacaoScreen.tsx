@@ -1,32 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import Toast from 'react-native-toast-message'; // Importe o Toast
+import { StackScreenProps } from '@react-navigation/stack';
+import Toast from 'react-native-toast-message';
+import { supabase } from '../../../supabase';
 
 type RootStackParamList = {
-  EscareacaoScreen: undefined;
+  EscareacaoScreen: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
   ConfirmationEscareacaoScreen: {
     status: string;
-    orderNumber: string;
     tireId: string;
   };
 };
 
-type EscareacaoScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EscareacaoScreen'>;
-type EscareacaoScreenRouteProp = RouteProp<RootStackParamList, 'EscareacaoScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'EscareacaoScreen'>;
 
-type Props = {
-  navigation: EscareacaoScreenNavigationProp;
-  route: EscareacaoScreenRouteProp;
-};
-
-const EscareacaoScreen: React.FC<Props> = ({ navigation }) => {
+const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const employeeName = "João Silva";
-  const currentDate = new Date().toLocaleDateString();
+  const { tireId } = route.params; // Ajuste para pegar os parâmetros passados
 
   const handleApprovedToggle = () => {
     if (!approved) {
@@ -42,72 +35,104 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!approved && !rejected) {
       Toast.show({
         type: 'error',
         text1: 'Campos obrigatórios',
-        text2: 'Por favor, selecione uma opção (Aprovado ou Reprovado).',
+        text2: 'Por favor, preencha todos os campos obrigatórios!',
       });
     } else {
       const status = approved ? 'approved' : 'rejected';
-      const orderNumber = "12345"; 
-      const tireId = "67890"; 
 
+      // Atualizar os dados de Escareacao na tabela Producao
+      const { error: updateProducaoError } = await supabase
+        .from('Producao')
+        .update({
+          EscAproRepro: approved ? true : false,
+        })
+        .eq('ID_Pneu', tireId);
+
+      if (updateProducaoError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao salvar',
+          text2: 'Não foi possível salvar os dados da Escareacao.',
+        });
+        console.error('Erro ao atualizar dados de Escareacao:', updateProducaoError);
+        return;
+      }
+
+      // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
+      const { error: updatePneuError } = await supabase
+        .from('Pneu')
+        .update({ Etapa_Producao: 'AplicacaoDeCola' })  // Substitua 'Escareacao' pela fase correta
+        .eq('ID_Pneu', tireId);
+
+      if (updatePneuError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao atualizar pneu',
+          text2: 'Não foi possível atualizar a etapa de produção.',
+        });
+        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
+        return;
+      }
+
+      // Navegar para a tela de confirmação após salvar os dados com sucesso
       navigation.navigate('ConfirmationEscareacaoScreen', {
         status,
-        orderNumber,
-        tireId,
+        tireId, // Adicione `tireId` para cumprir com o tipo esperado
       });
     }
   };
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
+  useEffect(() => {
+    setLoading(false); // Simula um carregamento inicial, remova ou ajuste conforme sua lógica.
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>Escareação</Text>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>Funcionário: {employeeName}</Text>
-          <Text style={styles.infoText}>Data: {currentDate}</Text>
-        </View>
-
         <View style={styles.cardContainer}>
-          <TouchableOpacity
-            style={[styles.card, approved && styles.cardApproved]}
-            onPress={handleApprovedToggle}
-          >
+          <TouchableOpacity style={[styles.card, approved && styles.cardApproved]} onPress={handleApprovedToggle}>
             <Text style={styles.cardText}>Aprovado</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.card, rejected && styles.cardRejected]}
-            onPress={handleRejectedToggle}
-          >
+          <TouchableOpacity style={[styles.card, rejected && styles.cardRejected]} onPress={handleRejectedToggle}>
             <Text style={styles.cardText}>Reprovado</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText}>Salvar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleBack}>
-            <Text style={styles.buttonText}>Voltar</Text>
-          </TouchableOpacity>
+          <Button label="Salvar" onPress={handleSave} />
+          <Button label="Voltar" onPress={() => navigation.goBack()} />
         </View>
       </ScrollView>
     </View>
   );
 };
 
+// Reusable Button Component
+const Button: React.FC<{ label: string; onPress: () => void }> = ({ label, onPress }) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Text style={styles.buttonText}>{label}</Text>
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFF5E1',
     padding: 20,
   },
   scrollContainer: {
