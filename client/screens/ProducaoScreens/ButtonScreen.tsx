@@ -34,9 +34,6 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                 <Image source={{ uri: item.image }} style={styles.cardImage} />
                 <Text style={styles.cardTitle}>{item.name}</Text>
                 <Text style={styles.cardDescription}>{item.description}</Text>
-                <View style={[styles.accessButton, isHovered && styles.accessButtonHovered]}>
-                    <Text style={styles.accessButtonText}>Acessar</Text>
-                </View>
             </TouchableOpacity>
         );
     };
@@ -48,8 +45,9 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                 data={buttons}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.name}
-                numColumns={2} // Define 2 cards por linha
+                numColumns={2} 
                 contentContainerStyle={styles.grid}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     );
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 30, // Aumenta a margem entre os cards
+        margin: 10, // Aumenta a margem entre os cards
         padding: 20, // Aumenta a margem interna
         height: 220, // Define uma altura fixa para os cards
     },
@@ -100,23 +98,6 @@ const styles = StyleSheet.create({
         fontSize: 14, // Tamanho da fonte da descrição
         textAlign: 'center',
         marginBottom: 10, // Margem entre descrição e botão
-    },
-    accessButton: {
-        backgroundColor: '#FFF',
-        borderRadius: 8,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        width: '60%', // O botão ocupa 60% da largura do card
-        alignItems: 'center',
-    },
-    accessButtonHovered: {
-        backgroundColor: '#FF7043', // Mudança de cor do botão no hover
-    },
-    accessButtonText: {
-        color: '#FF7043',
-        fontSize: 14,
-        fontWeight: 'bold',
-        textAlign: 'center',
     },
     grid: {
         justifyContent: 'center',
