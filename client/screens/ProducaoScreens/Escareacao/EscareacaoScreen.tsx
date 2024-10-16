@@ -19,7 +19,7 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
   const [rejected, setRejected] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { tireId } = route.params; // Ajuste para pegar os parâmetros passados
+  const tireId = route.params.tireId; // Ajuste para pegar os parâmetros passados
 
   const handleApprovedToggle = () => {
     if (!approved) {

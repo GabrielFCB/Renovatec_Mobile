@@ -27,12 +27,14 @@ import ConfirmationExam from "./screens/ProducaoScreens/Exame_Inicial/Confirmati
 import ConfirmationRaspaScreen from "./screens/ProducaoScreens/Raspa/ConfirmationRaspaScreen";
 import ConfirmationAplicacaoDeCola from "./screens/ProducaoScreens/Aplicacao_de_Cola/ConfirmationAplicacaoDeCola";
 import ConfirmationEscareacaoScreen from "./screens/ProducaoScreens/Escareacao/ConfirmationEscareacaoScreen";
+import ConfirmationOrbicushion from "./screens/ProducaoScreens/Orbicushion/ConfirmationOrbicushion";
 
 // Páginas de Visualização
 import VisualizarExameInicial from "./screens/ProducaoScreens/Exame_Inicial/VisualizarExameInicial";
 import VisualizarRaspa from "./screens/ProducaoScreens/Raspa/VisualizarRaspa";
 import VisualizarEscareacao from "./screens/ProducaoScreens/Escareacao/VisualizarEscareacao";
 import VisualizarAplicacaoDeCola from "./screens/ProducaoScreens/Aplicacao_de_Cola/VisualizarAplicacaoDeCola";
+import VisualizarOrbicushion from "./screens/ProducaoScreens/Orbicushion/VisualizarOrbicushion";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -72,6 +74,7 @@ const AuthStack = () => {
           <Stack.Screen name="ConfirmationEscareacaoScreen" component={ConfirmationEscareacaoScreen} options={{ title: "Confirmação da Escareação" }} />
           <Stack.Screen name="ConfirmationRaspaScreen" component={ConfirmationRaspaScreen} options={{ title: "Confirmação da Raspa" }} />
           <Stack.Screen name="ConfirmationAplicacaoDeCola" component={ConfirmationAplicacaoDeCola} options={{ title: "Confirmação da Aplicação de Cola" }} />
+          <Stack.Screen name="ConfirmationOrbicushion" component={ConfirmationOrbicushion} options={{ title: "Confirmação do Orbicushion" }} />
           <Stack.Screen name="ConfirmationAutoclave" component={ConfirmationAutoclave} options={{ title: "Confirmação da Autoclave" }} />
           <Stack.Screen name="ConfirmationExFinal" component={ConfirmationExFinal} options={{ title: "Confirmação da Finalização da Produção" }} />
 
@@ -80,6 +83,7 @@ const AuthStack = () => {
           <Stack.Screen name="VisualizarEscareacao" component={VisualizarEscareacao} options={{ title: "Visualizar Escareação" }} />
           <Stack.Screen name="VisualizarAplicacaoDeCola" component={VisualizarAplicacaoDeCola} options={{ title: "Visualizar Aplicação de Cola" }} />
           <Stack.Screen name="VisualizarRaspa" component={VisualizarRaspa} options={{ title: "Visualizar Raspa" }} />
+          <Stack.Screen name="VisualizarOrbicushion" component={VisualizarOrbicushion} options={{ title: "Visualizar Orbicushion" }} />
         </>
       ) : (
         <>
