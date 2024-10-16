@@ -15,7 +15,7 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
         { name: 'Aplicação de cola', description: 'Aplicar cola nos materiais', image: 'https://images.unsplash.com/photo-1506022991996-a56ff643eade?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', route: 'VisualizarAplicacaoDeCola' },
         { name: 'Orbicushion', description: 'Adicionar orbicushion', image: 'https://via.placeholder.com/100', route: 'VisualizarOrbicushion' },
         { name: 'Corte de banda', description: 'Cortar a banda corretamente', image: 'https://via.placeholder.com/100', route: 'CorteDeBandaScreen' },
-        { name: 'Aplicação de banda', description: 'Aplicar a banda nos pneus', image: 'https://via.placeholder.com/100', route: 'AplicarBandaScreen' },
+        { name: 'Aplicação de banda', description: 'Aplicar a banda nos pneus', image: 'https://via.placeholder.com/100', route: 'VisualizarAplicarBanda' },
         { name: 'Montagem', description: 'Montar o produto final', image: 'https://via.placeholder.com/100', route: 'MontagemProd' },
         { name: 'Autoclave', description: 'Utilizar autoclave para processamento', image: 'https://via.placeholder.com/100', route: 'AutoclaveProd' },
         { name: 'Exame final', description: 'Realizar exame final', image: 'https://via.placeholder.com/100', route: 'ExameFinalProd' },
