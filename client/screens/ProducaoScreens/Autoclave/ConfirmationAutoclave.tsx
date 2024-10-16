@@ -6,24 +6,25 @@ import { RootStackParamList } from '../../../src/types';
 type Props = StackScreenProps<RootStackParamList, 'ConfirmationAutoclave'>;
 
 const ConfirmationAutoclave: React.FC<Props> = ({ route, navigation }) => {
+  // Receber os valores da navegação
   const { selectedValue, position, load } = route.params;
 
-  const handleNewAssembly = () => {
-    navigation.navigate('Buttons'); 
+  const handleNewAutoclave = () => {
+    navigation.navigate('Buttons');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirmação Autoclave</Text>
+      <Text style={styles.title}>Confirmação da Autoclave</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Autoclave Selecionada: {selectedValue}</Text>
+        <Text style={styles.infoText}>Autoclave: {selectedValue}</Text>
         <Text style={styles.infoText}>Posição: {position}</Text>
         <Text style={styles.infoText}>Carga: {load}</Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
-        <Text style={styles.buttonText}>Nova Autoclave</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewAutoclave}>
+        <Text style={styles.buttonText}>Nova Etapa</Text>
       </TouchableOpacity>
     </View>
   );
@@ -32,7 +33,7 @@ const ConfirmationAutoclave: React.FC<Props> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E1',
+    backgroundColor: '#F9F9F9',
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -56,12 +57,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',
     marginBottom: 10,
-  },
-  approved: {
-    color: '#3C763D',
-  },
-  rejected: {
-    color: '#A94442',
   },
   button: {
     width: '80%',
