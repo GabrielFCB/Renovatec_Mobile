@@ -9,34 +9,77 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../src/types";
+import { RootStackParamList } from '../../../src/types';
 import { useNavigation } from "@react-navigation/native";
+import { supabase } from '../../../supabase';
+import Toast from 'react-native-toast-message';
 
-type CheckboxComponentProps = {};
+type Props = StackScreenProps<RootStackParamList, 'AutoclaveProd'>;
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "AutoclaveProd">;
-
-const CheckboxComponent: React.FunctionComponent<CheckboxComponentProps> = () => {
-  const [check, setCheck] = useState(false);
+const AutoclaveProd: React.FC<Props> = ({ navigation, route }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [load, setLoad] = useState<string>("");
 
-  const navigation = useNavigation<NavigationProp>();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Verificar se todos os campos estão preenchidos
     if (!selectedValue || !position || !load) {
-      Alert.alert("Erro", "Por favor, selecione uma opção.");
-      return; // Não avança para a próxima tela
+      Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios.");
+      return;
     }
 
-    // Navegar para ConfirmationAutoclave passando os parâmetros
-    navigation.navigate("ConfirmationAutoclave", {
-      selectedValue,
-      position,
-      load,
-    });
+    try {
+      const { error: updateProducaoError } = await supabase
+        .from('Producao')
+        .update({
+          AutCarga: load,
+          AutAutoclave: selectedValue,
+          AutPosicao: position,
+        })
+        .eq('ID_Pneu', route.params.tireId);
+
+      if (updateProducaoError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao salvar',
+          text2: 'Não foi possível atualizar os dados da Autoclave.',
+        });
+        console.error('Erro ao atualizar Producao:', updateProducaoError);
+        return;
+      }
+
+      const { error: updatePneuError } = await supabase
+        .from('Pneu')
+        .update({ Etapa_Producao: 'ExameFinal' })
+        .eq('ID_Pneu', route.params.tireId);
+
+      if (updatePneuError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao atualizar Pneu',
+          text2: 'Não foi possível atualizar a etapa de produção.',
+        });
+        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
+        return;
+      }
+
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: 'Os dados foram atualizados com sucesso!',
+      });
+
+      // Navegar para ConfirmationAutoclave após o sucesso
+      navigation.navigate("ConfirmationAutoclave", {
+        selectedValue,
+        position,
+        load,
+      });
+    } catch (error) {
+      console.error('Erro inesperado:', error);
+      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+    }
   };
 
   const back = () => {
@@ -147,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckboxComponent;
+export default AutoclaveProd;

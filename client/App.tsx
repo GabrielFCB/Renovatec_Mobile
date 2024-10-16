@@ -39,6 +39,7 @@ import VisualizarAplicacaoDeCola from "./screens/ProducaoScreens/Aplicacao_de_Co
 import VisualizarOrbicushion from "./screens/ProducaoScreens/Orbicushion/VisualizarOrbicushion";
 import VisualizarAplicarBanda from "./screens/ProducaoScreens/Aplicacao_de_Banda/VisualizarAplicarBanda";
 import VisualizarMontagem from "./screens/ProducaoScreens/Montagem/VisualizarMontagem";
+import VisualizarAutoclave from "./screens/ProducaoScreens/Autoclave/VisualizarAutoclave";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -92,6 +93,7 @@ const AuthStack = () => {
           <Stack.Screen name="VisualizarOrbicushion" component={VisualizarOrbicushion} options={{ title: "Visualizar Orbicushion" }} />
           <Stack.Screen name="VisualizarAplicarBanda" component={VisualizarAplicarBanda} options={{ title: "Visualizar Aplicação de Banda" }} />
           <Stack.Screen name="VisualizarMontagem" component={VisualizarMontagem} options={{ title: "Visualizar Montagem" }} />
+          <Stack.Screen name="VisualizarAutoclave" component={VisualizarAutoclave} options={{ title: "Visualizar Autoclave" }} />
         </>
       ) : (
         <>

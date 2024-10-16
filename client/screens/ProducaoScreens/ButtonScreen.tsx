@@ -17,7 +17,7 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
         { name: 'Corte de banda', description: 'Cortar a banda corretamente', image: 'https://via.placeholder.com/100', route: 'CorteDeBandaScreen' },
         { name: 'Aplicação de banda', description: 'Aplicar a banda nos pneus', image: 'https://via.placeholder.com/100', route: 'VisualizarAplicarBanda' },
         { name: 'Montagem', description: 'Montar o produto final', image: 'https://via.placeholder.com/100', route: 'VisualizarMontagem' },
-        { name: 'Autoclave', description: 'Utilizar autoclave para processamento', image: 'https://via.placeholder.com/100', route: 'AutoclaveProd' },
+        { name: 'Autoclave', description: 'Utilizar autoclave para processamento', image: 'https://via.placeholder.com/100', route: 'VisualizarAutoclave' },
         { name: 'Exame final', description: 'Realizar exame final', image: 'https://via.placeholder.com/100', route: 'ExameFinalProd' },
     ];
 
