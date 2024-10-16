@@ -57,9 +57,9 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
         Toast.show({
           type: 'error',
           text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados da Aplicacao De Cola.',
+          text2: 'Não foi possível salvar os dados do Orbicushion.',
         });
-        console.error('Erro ao atualizar dados de Aplicacao De Cola:', updateProducaoError);
+        console.error('Erro ao atualizar dados do Orbicushion:', updateProducaoError);
         return;
       }
 
@@ -102,7 +102,7 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Aplicação de Cola</Text>
+        <Text style={styles.title}>Orbicushion</Text>
 
         <View style={styles.cardContainer}>
           <TouchableOpacity style={[styles.card, approved && styles.cardApproved]} onPress={handleApprovedToggle}>
