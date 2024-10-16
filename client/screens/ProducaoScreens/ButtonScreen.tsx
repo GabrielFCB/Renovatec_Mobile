@@ -16,7 +16,7 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
         { name: 'Orbicushion', description: 'Adicionar orbicushion', image: 'https://via.placeholder.com/100', route: 'VisualizarOrbicushion' },
         { name: 'Corte de banda', description: 'Cortar a banda corretamente', image: 'https://via.placeholder.com/100', route: 'CorteDeBandaScreen' },
         { name: 'Aplicação de banda', description: 'Aplicar a banda nos pneus', image: 'https://via.placeholder.com/100', route: 'VisualizarAplicarBanda' },
-        { name: 'Montagem', description: 'Montar o produto final', image: 'https://via.placeholder.com/100', route: 'MontagemProd' },
+        { name: 'Montagem', description: 'Montar o produto final', image: 'https://via.placeholder.com/100', route: 'VisualizarMontagem' },
         { name: 'Autoclave', description: 'Utilizar autoclave para processamento', image: 'https://via.placeholder.com/100', route: 'AutoclaveProd' },
         { name: 'Exame final', description: 'Realizar exame final', image: 'https://via.placeholder.com/100', route: 'ExameFinalProd' },
     ];
@@ -45,7 +45,7 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
                 data={buttons}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.name}
-                numColumns={2} 
+                numColumns={2}
                 contentContainerStyle={styles.grid}
                 showsVerticalScrollIndicator={false}
             />

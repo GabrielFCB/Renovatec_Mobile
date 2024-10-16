@@ -11,16 +11,16 @@ import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarOrbicushionNavigationProp = StackNavigationProp<
+type VisualizarMontagemNavigationProp = StackNavigationProp<
     RootStackParamList,
-    "Orbicushion"
+    "MontagemProd"
 >;
 
 type Props = {
-    navigation: VisualizarOrbicushionNavigationProp;
+    navigation: VisualizarMontagemNavigationProp;
 };
 
-const VisualizarOrbicushion: React.FC<Props> = ({ navigation }) => {
+const VisualizarMontagem: React.FC<Props> = ({ navigation }) => {
     const [pneuData, setPneuData] = useState<PneuItem[]>([]);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const VisualizarOrbicushion: React.FC<Props> = ({ navigation }) => {
             const { data, error } = await supabase
                 .from("Pneu")
                 .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
-                .eq("Etapa_Producao", "Orbicushion");
+                .eq("Etapa_Producao", "Montagem");
 
             if (error) {
                 console.error("Erro ao buscar pneus:", error);
@@ -48,7 +48,7 @@ const VisualizarOrbicushion: React.FC<Props> = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.examButton}
                 onPress={() =>
-                    navigation.navigate("Orbicushion", { tireId: item.ID_Pneu.toString() })
+                    navigation.navigate("MontagemProd", { tireId: item.ID_Pneu.toString() })
                 }
             >
                 <Text style={styles.examButtonText}>X</Text>
@@ -58,7 +58,7 @@ const VisualizarOrbicushion: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Pneus - Orbicushion</Text>
+            <Text style={styles.title}>Pneus - Montagem</Text>
 
             {/* Cabeçalho da Tabela */}
             <View style={styles.tableHeader}>
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default VisualizarOrbicushion;
+export default VisualizarMontagem;

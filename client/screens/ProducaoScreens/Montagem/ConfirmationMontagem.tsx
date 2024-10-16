@@ -6,10 +6,10 @@ import { RootStackParamList } from '../../../src/types';
 type Props = StackScreenProps<RootStackParamList, 'ConfirmationMontagem'>;
 
 const ConfirmationMontagem: React.FC<Props> = ({ route, navigation }) => {
-  const { status, orderNumber, assemblyId } = route.params;
+  const { status, tireId } = route.params;
 
-  const handleNewAssembly = () => {
-    navigation.navigate('Buttons');  // Navega para a tela ButtonScreen
+  const handleNewMontagem = () => {
+    navigation.navigate('Buttons');
   };
 
   return (
@@ -17,15 +17,14 @@ const ConfirmationMontagem: React.FC<Props> = ({ route, navigation }) => {
       <Text style={styles.title}>Confirmação da Montagem</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Número do Pedido: {orderNumber}</Text>
-        <Text style={styles.infoText}>ID da Montagem: {assemblyId}</Text>
+        <Text style={styles.infoText}>ID do Pneu: {tireId}</Text>
         <Text style={[styles.statusText, status === 'approved' ? styles.approved : styles.rejected]}>
           Status: {status === 'approved' ? 'Aprovado' : 'Reprovado'}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleNewAssembly}>
-        <Text style={styles.buttonText}>Nova Montagem</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNewMontagem}>
+        <Text style={styles.buttonText}>Nova Etapa</Text>
       </TouchableOpacity>
     </View>
   );
