@@ -5,16 +5,16 @@ import Toast from 'react-native-toast-message';
 import { supabase } from '../../../supabase';
 
 type RootStackParamList = {
-  EscareacaoScreen: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
-  ConfirmationEscareacaoScreen: {
+  AplicacaoDeColaScreen: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
+  ConfirmationAplicacaoDeCola: {
     status: string;
     tireId: string;
   };
 };
 
-type Props = StackScreenProps<RootStackParamList, 'EscareacaoScreen'>;
+type Props = StackScreenProps<RootStackParamList, 'AplicacaoDeColaScreen'>;
 
-const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
+const AplicacaoDeColaScreen: React.FC<Props> = ({ navigation, route }) => {
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -45,11 +45,11 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
     } else {
       const status = approved ? 'approved' : 'rejected';
 
-      // Atualizar os dados de Escareacao na tabela Producao
+      // Atualizar os dados de AplicacaoDeCola na tabela Producao
       const { error: updateProducaoError } = await supabase
         .from('Producao')
         .update({
-          EscAproRepro: approved ? true : false,
+          ACAproRepro: approved ? true : false,
         })
         .eq('ID_Pneu', tireId);
 
@@ -57,16 +57,16 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
         Toast.show({
           type: 'error',
           text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados da Escareacao.',
+          text2: 'Não foi possível salvar os dados da Aplicacao De Cola.',
         });
-        console.error('Erro ao atualizar dados de Escareacao:', updateProducaoError);
+        console.error('Erro ao atualizar dados de Aplicacao De Cola:', updateProducaoError);
         return;
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
       const { error: updatePneuError } = await supabase
         .from('Pneu')
-        .update({ Etapa_Producao: 'AplicacaoDeCola' })  // Substitua 'Escareacao' pela fase correta
+        .update({ Etapa_Producao: 'Orbicushion' })  // Substitua 'Orbicushion' pela fase correta
         .eq('ID_Pneu', tireId);
 
       if (updatePneuError) {
@@ -80,9 +80,9 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
       }
 
       // Navegar para a tela de confirmação após salvar os dados com sucesso
-      navigation.navigate('ConfirmationEscareacaoScreen', {
+      navigation.navigate('ConfirmationAplicacaoDeCola', {
         status,
-        tireId, // Adicione `tireId` para cumprir com o tipo esperado
+        tireId, 
       });
     }
   };
@@ -102,7 +102,7 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Escareação</Text>
+        <Text style={styles.title}>Aplicação de Cola</Text>
 
         <View style={styles.cardContainer}>
           <TouchableOpacity style={[styles.card, approved && styles.cardApproved]} onPress={handleApprovedToggle}>
@@ -205,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EscareacaoScreen;
+export default AplicacaoDeColaScreen;
