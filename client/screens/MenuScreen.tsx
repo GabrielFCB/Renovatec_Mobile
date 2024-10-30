@@ -29,6 +29,13 @@ export default function MenuScreen({ navigation }) {
 
             <TouchableOpacity
                 style={styles.button}
+                onPress={() => navigation.navigate("VisualizarPneusConcluidos")}
+            >
+                <Text style={styles.buttonText}>Pneus Concluidos</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.button}
                 onPress={() => signOut()}
             >
                 <Text style={styles.buttonText}>Sair</Text>
