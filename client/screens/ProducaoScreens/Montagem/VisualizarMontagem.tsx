@@ -10,7 +10,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
-// Definindo o tipo de navegação com base no RootStackParamList
+// Definindo o tipo de navegação com base no RootStackParamList atualizado
 type VisualizarMontagemNavigationProp = StackNavigationProp<
     RootStackParamList,
     "MontagemProd"
@@ -27,7 +27,7 @@ const VisualizarMontagem: React.FC<Props> = ({ navigation }) => {
         const fetchData = async () => {
             const { data, error } = await supabase
                 .from("Pneu")
-                .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
+                .select("ID_Pneu, codigo_pneu, status, ID_Coleta, width, perimeter")
                 .eq("Etapa_Producao", "Montagem");
 
             if (error) {
@@ -66,7 +66,6 @@ const VisualizarMontagem: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.tableHeaderText}>Código Pneu</Text>
                 <Text style={styles.tableHeaderText}>ID Coleta</Text>
                 <Text style={styles.tableHeaderText}></Text>
-                {/* Espaço reservado para o botão */}
             </View>
 
             <FlatList

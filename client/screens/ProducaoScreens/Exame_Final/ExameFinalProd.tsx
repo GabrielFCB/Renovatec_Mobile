@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,13 @@ import {
   Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../src/types";
+import { RootStackParamList } from "../../../src/types";
+import { supabase } from '../../../supabase';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "ExameFinalProd">;
+type ExameFinalScreenRouteProp = RouteProp<RootStackParamList, "ExameFinalProd">;
 
 const ExameFinalScreen: React.FunctionComponent = () => {
   const [approved, setApproved] = useState(false);
@@ -21,6 +23,7 @@ const ExameFinalScreen: React.FunctionComponent = () => {
   const [show, setShow] = useState<boolean>(false);
 
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<ExameFinalScreenRouteProp>();
 
   const handleApprovedToggle = () => {
     if (!approved) {
@@ -46,7 +49,7 @@ const ExameFinalScreen: React.FunctionComponent = () => {
     setShow(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!approved && !rejected) {
       Alert.alert("Erro", "Por favor, selecione uma opção (Aprovado ou Reprovado).");
       return;
@@ -55,6 +58,21 @@ const ExameFinalScreen: React.FunctionComponent = () => {
     const status = approved ? "approved" : "rejected";
     const formattedDate = date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` : "";
 
+    // Atualizar Etapa_Producao para "ProducaoFinalizada" se o status for "approved"
+    if (approved) {
+      const { error } = await supabase
+        .from('Pneu')
+        .update({ Etapa_Producao: 'ProducaoFinalizada' })
+        .eq('ID_Pneu', route.params.tireId);
+
+      if (error) {
+        Alert.alert("Erro", "Não foi possível atualizar a etapa de produção.");
+        console.error("Erro ao atualizar Etapa_Producao:", error);
+        return;
+      }
+    }
+
+    // Navegar para a tela de confirmação com o status e a data formatada
     navigation.navigate("ConfirmationExFinal", {
       status,
       date: formattedDate,

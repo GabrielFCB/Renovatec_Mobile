@@ -11,24 +11,24 @@ import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarCorteBandaNavigationProp = StackNavigationProp<
+type VisualizarExameFinalNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "CorteBandaScreen"
+  "ExameFinalProd"
 >;
 
 type Props = {
-  navigation: VisualizarCorteBandaNavigationProp;
+  navigation: VisualizarExameFinalNavigationProp;
 };
 
-const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
+const VisualizarExameFinal: React.FC<Props> = ({ navigation }) => {
   const [pneuData, setPneuData] = useState<PneuItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
         .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, nome_cliente") // Supondo que "nome_cliente" está na tabela
-        .eq("Etapa_Producao", "Corte de Banda"); // Ajuste conforme necessário
+        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
+        .eq("Etapa_Producao", "ExameFinal");
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -42,13 +42,16 @@ const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
 
   const renderTableRow = ({ item }: { item: PneuItem }) => (
     <View style={styles.tableRow}>
-      <Text style={styles.tableCell}>{item.nome_cliente}</Text>
-      <Text style={styles.tableCell}>{item.ID_Coleta}</Text>
+      <Text style={styles.tableCell}>{item.status}</Text>
       <Text style={styles.tableCell}>{item.codigo_pneu}</Text>
+      <Text style={styles.tableCell}>{item.ID_Coleta}</Text>
       <TouchableOpacity
         style={styles.examButton}
         onPress={() =>
-          navigation.navigate("CorteBandaScreen", { tireId: item.ID_Pneu.toString() })
+          navigation.navigate("ExameFinalProd", { 
+            tireId: item.ID_Pneu.toString(), 
+            status: item.status 
+          })
         }
       >
         <Text style={styles.examButtonText}>X</Text>
@@ -58,13 +61,13 @@ const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pneus - Corte de Banda</Text>
+      <Text style={styles.title}>Pneus - Exame Inicial</Text>
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
-        <Text style={styles.tableHeaderText}>Nome do Cliente</Text>
-        <Text style={styles.tableHeaderText}>ID Coleta</Text>
+        <Text style={styles.tableHeaderText}>Status</Text>
         <Text style={styles.tableHeaderText}>Código Pneu</Text>
+        <Text style={styles.tableHeaderText}>ID Coleta</Text>
         <Text style={styles.tableHeaderText}></Text>
         {/* Espaço reservado para o botão */}
       </View>
@@ -134,9 +137,9 @@ const styles = StyleSheet.create({
   },
   examButton: {
     backgroundColor: "#FF7043",
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -146,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VisualizarCorteBanda;
+export default VisualizarExameFinal;

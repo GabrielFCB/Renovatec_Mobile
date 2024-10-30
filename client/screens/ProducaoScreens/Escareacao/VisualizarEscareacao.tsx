@@ -27,7 +27,7 @@ const VisualizarEscareacao: React.FC<Props> = ({ navigation }) => {
     const fetchData = async () => {
       const { data, error } = await supabase
         .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
+        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
         .eq("Etapa_Producao", "Escareacao");
 
       if (error) {

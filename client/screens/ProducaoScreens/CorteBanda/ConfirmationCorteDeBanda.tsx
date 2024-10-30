@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../src/types';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmationCorteBanda'>;
+type Props = StackScreenProps<RootStackParamList, 'ConfirmationCorteDeBanda'>;
 
 const ConfirmationCorteBanda: React.FC<Props> = ({ navigation }) => {
   const handleNewCorteBanda = () => {

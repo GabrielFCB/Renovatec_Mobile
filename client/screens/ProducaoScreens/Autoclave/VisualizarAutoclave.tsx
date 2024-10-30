@@ -27,7 +27,7 @@ const VisualizarAutoclave: React.FC<Props> = ({ navigation }) => {
         const fetchData = async () => {
             const { data, error } = await supabase
                 .from("Pneu")
-                .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
+                .select("ID_Pneu, codigo_pneu, status, ID_Coleta, width, perimeter")
                 .eq("Etapa_Producao", "Autoclave");
 
             if (error) {

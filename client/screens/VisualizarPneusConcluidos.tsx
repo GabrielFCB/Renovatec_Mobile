@@ -1,26 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { supabase } from "../../../supabase";
-import { RootStackParamList, PneuItem } from "../../../src/types";
+import { StyleSheet, View, Text, FlatList } from "react-native";
+import { supabase } from "../supabase";
+import { PneuItem } from "../src/types";
 
-// Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarExameInicialNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "ExamScreen"
->;
-
-type Props = {
-  navigation: VisualizarExameInicialNavigationProp;
-};
-
-const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
+const VisualizarPneusConcluidos: React.FC = () => {
   const [pneuData, setPneuData] = useState<PneuItem[]>([]);
 
   useEffect(() => {
@@ -28,7 +11,7 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
       const { data, error } = await supabase
         .from("Pneu")
         .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
-        .eq("Etapa_Producao", "ExameInicial");
+        .eq("Etapa_Producao", "ProducaoFinalizada");
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -45,28 +28,18 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.tableCell}>{item.status}</Text>
       <Text style={styles.tableCell}>{item.codigo_pneu}</Text>
       <Text style={styles.tableCell}>{item.ID_Coleta}</Text>
-      <TouchableOpacity
-        style={styles.examButton}
-        onPress={() =>
-          navigation.navigate("ExamScreen", { tireId: item.ID_Pneu.toString() })
-        }
-      >
-        <Text style={styles.examButtonText}>X</Text>
-      </TouchableOpacity>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pneus - Exame Inicial</Text>
+      <Text style={styles.title}>Pneus - Produção Concluída</Text>
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
         <Text style={styles.tableHeaderText}>Status</Text>
         <Text style={styles.tableHeaderText}>Código Pneu</Text>
         <Text style={styles.tableHeaderText}>ID Coleta</Text>
-        <Text style={styles.tableHeaderText}></Text>
-        {/* Espaço reservado para o botão */}
       </View>
 
       <FlatList
@@ -132,18 +105,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     textAlign: "left",
   },
-  examButton: {
-    backgroundColor: "#FF7043",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  examButtonText: {
-    color: "#FFF",
-    fontWeight: "bold",
-  },
 });
 
-export default VisualizarExameInicial;
+export default VisualizarPneusConcluidos;
