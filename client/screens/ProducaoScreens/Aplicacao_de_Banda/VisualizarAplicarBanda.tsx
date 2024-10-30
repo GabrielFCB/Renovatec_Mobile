@@ -28,7 +28,7 @@ const VisualizarAplicarBanda: React.FC<Props> = ({ navigation }) => {
             const { data, error } = await supabase
                 .from("Pneu")
                 .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
-                .eq("Etapa_Producao", "AplicarBanda");
+                .eq("Etapa_Producao", "AplicacaoDeBanda");
 
             if (error) {
                 console.error("Erro ao buscar pneus:", error);
