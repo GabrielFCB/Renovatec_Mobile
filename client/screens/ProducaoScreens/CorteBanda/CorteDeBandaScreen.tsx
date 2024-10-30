@@ -1,25 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../../src/types';
+import { supabase } from '../../../supabase';
+import Toast from 'react-native-toast-message'; // Adiciona a importação do Toast
+
+// Define o tipo para a rota
+type CorteBandaScreenRouteProp = RouteProp<RootStackParamList, 'CorteDeBandaScreen'>;
 
 const CorteBandaScreen = () => {
     const navigation = useNavigation();
+    const route = useRoute<CorteBandaScreenRouteProp>();
     const [isApproved, setIsApproved] = useState(false);
+    const [perimeter, setPerimeter] = useState<string | null>(null);
+    const [width, setWidth] = useState<string | null>(null);
+    const { tireId } = route.params; // Obtém o tireId dos parâmetros da rota
+
+    useEffect(() => {
+        const fetchPneuData = async () => {
+            const { data, error } = await supabase
+                .from('Pneu')
+                .select('perimeter, width')
+                .eq('ID_Pneu', tireId)
+                .single(); // Garante que apenas um item seja retornado
+
+            if (error) {
+                console.error("Erro ao buscar dados do pneu:", error);
+            } else if (data) {
+                setPerimeter(data.perimeter);
+                setWidth(data.width);
+            }
+        };
+
+        fetchPneuData();
+    }, [tireId]);
 
     const handleStatusToggle = () => {
         setIsApproved(!isApproved); // Alterna entre "Aplicado" e "Aprovado"
     };
 
-    const handleSave = () => {
-        navigation.navigate('ConfirmationCorteBanda'); 
+    const handleSave = async () => {
+        if (!isApproved) {
+            Toast.show({
+                type: 'error',
+                text1: 'Aprovação Necessária',
+                text2: 'Aplique a banda antes de salvar.',
+            });
+            return;
+        }
+
+        // Atualiza a coluna Etapa_Producao na tabela Pneu
+        const { error } = await supabase
+            .from('Pneu')
+            .update({ Etapa_Producao: 'AplicarBanda' })
+            .eq('ID_Pneu', tireId);
+
+        if (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Erro ao atualizar',
+                text2: 'Não foi possível atualizar a etapa de produção.',
+            });
+            console.error('Erro ao atualizar Etapa_Producao:', error);
+        } else {
+            // Navega para a tela de confirmação com os parâmetros corretos
+            navigation.navigate('ConfirmationAplicarBanda' as never, { status: 'approved', tireId } as never);
+        }
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Corte da Banda</Text>
 
-            <Text style={styles.details}>Perímetro: 200 cm</Text>
-            <Text style={styles.details}>Largura: 50 cm</Text>
+            <Text style={styles.details}>Perímetro: {perimeter ? `${perimeter} cm` : 'Não está preenchido...'}</Text>
+            <Text style={styles.details}>Largura: {width ? `${width} cm` : 'Não está preenchido...'}</Text>
 
             <TouchableOpacity
                 style={[styles.statusButton, isApproved && styles.statusButtonApproved]}
@@ -45,7 +99,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: '#FFF6E5', // Cor de fundo semelhante à imagem
+        backgroundColor: '#FFF6E5',
         alignItems: 'center',
         justifyContent: 'center',
     },

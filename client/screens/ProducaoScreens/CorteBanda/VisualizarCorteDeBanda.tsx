@@ -11,13 +11,13 @@ import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarCorteBandaNavigationProp = StackNavigationProp<
+type VisualizarCorteDeBandaNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "CorteBandaScreen"
+  "CorteDeBandaScreen"
 >;
 
 type Props = {
-  navigation: VisualizarCorteBandaNavigationProp;
+  navigation: VisualizarCorteDeBandaNavigationProp;
 };
 
 const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
@@ -27,8 +27,8 @@ const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
     const fetchData = async () => {
       const { data, error } = await supabase
         .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, nome_cliente") // Supondo que "nome_cliente" está na tabela
-        .eq("Etapa_Producao", "Corte de Banda"); // Ajuste conforme necessário
+        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, width, perimeter")
+        .eq("Etapa_Producao", "CorteDeBanda");
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -42,13 +42,13 @@ const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
 
   const renderTableRow = ({ item }: { item: PneuItem }) => (
     <View style={styles.tableRow}>
-      <Text style={styles.tableCell}>{item.nome_cliente}</Text>
+      <Text style={styles.tableCell}>{item.status}</Text>
       <Text style={styles.tableCell}>{item.ID_Coleta}</Text>
       <Text style={styles.tableCell}>{item.codigo_pneu}</Text>
       <TouchableOpacity
         style={styles.examButton}
         onPress={() =>
-          navigation.navigate("CorteBandaScreen", { tireId: item.ID_Pneu.toString() })
+          navigation.navigate("CorteDeBandaScreen", { tireId: item.ID_Pneu.toString() })
         }
       >
         <Text style={styles.examButtonText}>X</Text>
@@ -62,11 +62,10 @@ const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
-        <Text style={styles.tableHeaderText}>Nome do Cliente</Text>
+        <Text style={styles.tableHeaderText}>Status</Text>
         <Text style={styles.tableHeaderText}>ID Coleta</Text>
         <Text style={styles.tableHeaderText}>Código Pneu</Text>
         <Text style={styles.tableHeaderText}></Text>
-        {/* Espaço reservado para o botão */}
       </View>
 
       <FlatList
