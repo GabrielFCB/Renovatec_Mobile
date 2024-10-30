@@ -2,6 +2,7 @@
 export type RootStackParamList = {
   Login: undefined;
   Menu: undefined;
+  VisualizarPneusConcluidos: undefined;
   SenhaReset: undefined;
   Buttons: undefined;
   ////Exame Inicial////
@@ -21,20 +22,29 @@ export type RootStackParamList = {
   VisualizarAplicacaoDeCola: undefined;
   ConfirmationAplicacaoDeCola: { status: string; tireId: string };
   ////Orbicushion////
-  Orbicushion: undefined;
+  Orbicushion: { tireId: string; };
+  ConfirmationOrbicushion: { status: string; tireId: string };
+  VisualizarOrbicushion: { status: string; tireId: string };
   ////Corte de Banda////
-
+  CorteDeBandaScreen: { status: string; tireId: string };
+  VisualizarCorteDeBanda: { status: string; tireId: string };
+  ConfirmationCorteDeBanda: { status: string; tireId: string };
   ////Aplicacao de Banda////
-  AplicarBandaScreen: { status: string; width: string; perimeter: string };
+  AplicarBandaScreen: { tireId: string; status: string; width: string; perimeter: string };
+  VisualizarAplicarBanda: {tireId: string; status: string; width: string; perimeter: string}
+  ConfirmationAplicarBanda: { status: string; tireId: string };
   ////Montagem////
-  MontagemProd: undefined;
+  MontagemProd: { tireId: string };
+  VisualizarMontagem: {tireId: string; status: string;}
+  ConfirmationMontagem: { status: string; tireId: string };
   ////Autoclave////
-  AutoclaveProd: undefined;
+  AutoclaveProd: { status: string; tireId: string };
+  VisualizarAutoclave: {tireId: string; status: string;};
   ConfirmationAutoclave: { selectedValue: string; position: string; load: string };
   ////Exame Final////
-  ExameFinalProd: undefined;
+  ExameFinalProd: { status: string; tireId: string };
   ConfirmationExFinal: { status: string; date: string };
-
+  VisualizarExameFinal: undefined;
 };
 
 // Definição do tipo para os dados da tabela Pneu
@@ -43,4 +53,6 @@ export type PneuItem = {
   codigo_pneu: string;
   status: string;
   ID_Coleta: string;
+  width: string; 
+  perimeter: string; 
 };

@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 import { supabase } from '../../../supabase';
 
 type RootStackParamList = {
-  Orbicushion: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
+  Orbicushion: { tireId: string };
   ConfirmationOrbicushion: {
     status: string;
     tireId: string;
@@ -19,7 +19,7 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
   const [rejected, setRejected] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { tireId } = route.params; // Ajuste para pegar os parâmetros passados
+  const { tireId } = route.params;
 
   const handleApprovedToggle = () => {
     if (!approved) {
@@ -42,31 +42,32 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
         text1: 'Campos obrigatórios',
         text2: 'Por favor, preencha todos os campos obrigatórios!',
       });
-    } else {
-      const status = approved ? 'approved' : 'rejected';
+      return;
+    }
 
-      // Atualizar os dados de AplicacaoDeCola na tabela Producao
-      const { error: updateProducaoError } = await supabase
-        .from('Producao')
-        .update({
-          OrbAproRepro: approved ? true : false,
-        })
-        .eq('ID_Pneu', tireId);
+    const status = approved ? 'approved' : 'rejected';
 
-      if (updateProducaoError) {
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados do Orbicushion.',
-        });
-        console.error('Erro ao atualizar dados do Orbicushion:', updateProducaoError);
-        return;
-      }
+    // Atualizar a coluna OrbAproRepro na tabela Producao
+    const { error: updateProducaoError } = await supabase
+      .from('Producao')
+      .update({ OrbAproRepro: approved })
+      .eq('ID_Pneu', tireId);
 
-      // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
+    if (updateProducaoError) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao salvar',
+        text2: 'Não foi possível salvar os dados do Orbicushion.',
+      });
+      console.error('Erro ao atualizar dados do Orbicushion:', updateProducaoError);
+      return;
+    }
+
+    // Condicional para atualizar a Etapa_Producao apenas se o status for aprovado
+    if (approved) {
       const { error: updatePneuError } = await supabase
         .from('Pneu')
-        .update({ Etapa_Producao: 'CorteBanda' })  // Substitua 'Orbicushion' pela fase correta
+        .update({ Etapa_Producao: 'CorteDeBanda' })
         .eq('ID_Pneu', tireId);
 
       if (updatePneuError) {
@@ -78,17 +79,14 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
         console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
         return;
       }
-
-      // Navegar para a tela de confirmação após salvar os dados com sucesso
-      navigation.navigate('ConfirmationOrbicushion', {
-        status,
-        tireId,
-      });
     }
+
+    // Navegar para a tela de confirmação após salvar os dados com sucesso
+    navigation.navigate('ConfirmationOrbicushion', { status, tireId });
   };
 
   useEffect(() => {
-    setLoading(false); // Simula um carregamento inicial, remova ou ajuste conforme sua lógica.
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -122,7 +120,6 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
   );
 };
 
-// Reusable Button Component
 const Button: React.FC<{ label: string; onPress: () => void }> = ({ label, onPress }) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <Text style={styles.buttonText}>{label}</Text>
@@ -145,16 +142,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FF7043',
     marginBottom: 20,
-  },
-  infoContainer: {
-    width: '100%',
-    marginBottom: 20,
-    padding: 10,
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#333',
-    marginBottom: 5,
   },
   cardContainer: {
     width: '100%',
