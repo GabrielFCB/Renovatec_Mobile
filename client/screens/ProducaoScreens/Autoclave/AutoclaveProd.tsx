@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { StackScreenProps } from "@react-navigation/stack"; // Corrige a importação do StackScreenProps
 import { RootStackParamList } from '../../../src/types';
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from '../../../supabase';
@@ -20,7 +20,6 @@ const AutoclaveProd: React.FC<Props> = ({ navigation, route }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [load, setLoad] = useState<string>("");
-
 
   const handleSave = async () => {
     // Verificar se todos os campos estão preenchidos

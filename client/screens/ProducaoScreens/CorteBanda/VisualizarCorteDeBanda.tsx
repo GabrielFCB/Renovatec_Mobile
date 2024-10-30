@@ -11,24 +11,24 @@ import { supabase } from "../../../supabase";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
-type VisualizarExameInicialNavigationProp = StackNavigationProp<
+type VisualizarCorteDeBandaNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "ExamScreen"
+  "CorteDeBandaScreen"
 >;
 
 type Props = {
-  navigation: VisualizarExameInicialNavigationProp;
+  navigation: VisualizarCorteDeBandaNavigationProp;
 };
 
-const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
+const VisualizarCorteBanda: React.FC<Props> = ({ navigation }) => {
   const [pneuData, setPneuData] = useState<PneuItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
         .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
-        .eq("Etapa_Producao", "ExameInicial");
+        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, width, perimeter")
+        .eq("Etapa_Producao", "CorteDeBanda");
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -43,12 +43,12 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
   const renderTableRow = ({ item }: { item: PneuItem }) => (
     <View style={styles.tableRow}>
       <Text style={styles.tableCell}>{item.status}</Text>
-      <Text style={styles.tableCell}>{item.codigo_pneu}</Text>
       <Text style={styles.tableCell}>{item.ID_Coleta}</Text>
+      <Text style={styles.tableCell}>{item.codigo_pneu}</Text>
       <TouchableOpacity
         style={styles.examButton}
         onPress={() =>
-          navigation.navigate("ExamScreen", { tireId: item.ID_Pneu.toString() })
+          navigation.navigate("CorteDeBandaScreen", { tireId: item.ID_Pneu.toString() })
         }
       >
         <Text style={styles.examButtonText}>X</Text>
@@ -58,15 +58,14 @@ const VisualizarExameInicial: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pneus - Exame Inicial</Text>
+      <Text style={styles.title}>Pneus - Corte de Banda</Text>
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
         <Text style={styles.tableHeaderText}>Status</Text>
-        <Text style={styles.tableHeaderText}>Código Pneu</Text>
         <Text style={styles.tableHeaderText}>ID Coleta</Text>
+        <Text style={styles.tableHeaderText}>Código Pneu</Text>
         <Text style={styles.tableHeaderText}></Text>
-        {/* Espaço reservado para o botão */}
       </View>
 
       <FlatList
@@ -134,9 +133,9 @@ const styles = StyleSheet.create({
   },
   examButton: {
     backgroundColor: "#FF7043",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -146,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VisualizarExameInicial;
+export default VisualizarCorteBanda;

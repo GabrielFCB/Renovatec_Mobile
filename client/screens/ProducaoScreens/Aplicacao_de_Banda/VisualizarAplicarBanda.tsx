@@ -27,8 +27,8 @@ const VisualizarAplicarBanda: React.FC<Props> = ({ navigation }) => {
         const fetchData = async () => {
             const { data, error } = await supabase
                 .from("Pneu")
-                .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
-                .eq("Etapa_Producao", "AplicacaoDeBanda");
+                .select("ID_Pneu, codigo_pneu, status, ID_Coleta, width, perimeter") 
+                .eq("Etapa_Producao", "AplicarBanda");
 
             if (error) {
                 console.error("Erro ao buscar pneus:", error);
@@ -48,7 +48,12 @@ const VisualizarAplicarBanda: React.FC<Props> = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.examButton}
                 onPress={() =>
-                    navigation.navigate("AplicarBandaScreen", { tireId: item.ID_Pneu.toString() })
+                    navigation.navigate("AplicarBandaScreen", { 
+                        tireId: item.ID_Pneu.toString(),
+                        status: item.status,  
+                        width: item.width,       
+                        perimeter: item.perimeter    
+                    })
                 }
             >
                 <Text style={styles.examButtonText}>X</Text>

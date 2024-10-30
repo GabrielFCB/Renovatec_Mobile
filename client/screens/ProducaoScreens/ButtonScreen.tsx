@@ -15,11 +15,11 @@ const ButtonScreen: React.FC<ButtonScreenProps> = ({ navigation }) => {
         { name: 'Escareação', description: 'Processo de escareação', icon: 'hammer-wrench', library: 'MaterialCommunityIcons', route: 'VisualizarEscareacao' },
         { name: 'Aplicação de cola', description: 'Aplicar cola nos materiais', icon: 'brush', library: 'MaterialCommunityIcons', route: 'VisualizarAplicacaoDeCola' },
         { name: 'Orbicushion', description: 'Adicionar orbicushion', icon: 'circle-multiple-outline', library: 'MaterialCommunityIcons', route: 'VisualizarOrbicushion' },
-        { name: 'Corte de banda', description: 'Cortar a banda corretamente', icon: 'cut', library: 'FontAwesome5', route: 'CorteBandaScreen' },
+        { name: 'Corte de banda', description: 'Cortar a banda corretamente', icon: 'cut', library: 'FontAwesome5', route: 'VisualizarCorteDeBanda' },
         { name: 'Aplicação de banda', description: 'Aplicar a banda nos pneus', icon: 'plus-circle', library: 'FontAwesome5', route: 'VisualizarAplicarBanda' },
         { name: 'Montagem', description: 'Montar o produto final', icon: 'tools', library: 'FontAwesome5', route: 'VisualizarMontagem' },
         { name: 'Autoclave', description: 'Utilizar autoclave para processamento', icon: 'tools', library: 'MaterialCommunityIcons', route: 'VisualizarAutoclave' }, // Ícone de autoclave
-        { name: 'Exame final', description: 'Realizar exame final', icon: 'check-circle', library: 'FontAwesome5', route: 'ExameFinalProd' },
+        { name: 'Exame final', description: 'Realizar exame final', icon: 'check-circle', library: 'FontAwesome5', route: 'VisualizarExameFinal' },
     ];
 
     const renderIcon = (icon: string, library: string) => {
