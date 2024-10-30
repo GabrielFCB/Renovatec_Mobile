@@ -1,43 +1,50 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { supabase } from '../supabase';
-import { Alert } from 'react-native';
 import { useAuth } from '../context/Auth';
+import Toast from 'react-native-toast-message'; // Import do Toast
 
 export default function LoginScreen({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false)
-    const { session, setSession } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const { setSession } = useAuth();
+
+    // Função para exibir mensagens com Toast
+    function showToast(type, message) {
+        Toast.show({
+            type: type,
+            text1: message,
+            position: 'bottom',
+        });
+    }
+
+    // Verificar se os campos estão preenchidos
+    function validateFields() {
+        if (!username || !password) {
+            showToast('error', 'Por favor, preencha os campos de E-mail e Senha.');
+            return false;
+        }
+        return true;
+    }
 
     async function signInWithEmail() {
-        setLoading(true)
+        if (!validateFields()) return; // Impede a continuação se os campos estiverem vazios
+
+        setLoading(true);
         const { data, error } = await supabase.auth.signInWithPassword({
             email: username,
             password: password,
-        })
+        });
 
         if (error) {
-            Alert.alert(error.message);
+            showToast('error', 'Credenciais incorretas. Por favor, tente novamente.');
         } else {
             setSession(data.session);
+            showToast('success', 'Login realizado com sucesso!');
         }
-        setLoading(false)
-    }
 
-    async function signUpWithEmail() {
-        setLoading(true)
-        const {
-            data: { session },
-            error,
-        } = await supabase.auth.signUp({
-            email: username,
-            password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        if (!session) Alert.alert('Please check your inbox for email verification!')
-        setLoading(false)
+        setLoading(false);
     }
 
     return (
@@ -67,24 +74,22 @@ export default function LoginScreen({ navigation }) {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => signInWithEmail()}
+                onPress={signInWithEmail}
+                disabled={loading}
             >
-                <Text style={styles.buttonText}>Entrar</Text>
+                <Text style={styles.buttonText}>
+                    {loading ? 'Entrando...' : 'Entrar'}
+                </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => signUpWithEmail()}
-            >
-                <Text style={styles.buttonText}>Cadastrar</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navigation.navigate("SenhaReset")}
+                onPress={() => navigation.navigate('SenhaReset')}
             >
                 <Text style={styles.link}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
 
+            {/* Adicione o Toast no final */}
+            <Toast />
         </View>
     );
 }
@@ -126,7 +131,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
-        marginBottom: 20,
     },
     buttonText: {
         color: '#FFF',
@@ -136,5 +140,6 @@ const styles = StyleSheet.create({
     link: {
         color: '#FF7043',
         fontSize: 16,
+        marginTop: 15,
     },
 });
