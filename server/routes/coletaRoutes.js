@@ -5,7 +5,7 @@ const {
   getColeta,
   getColetaWithCliente,
   deleteColetaById,
-} = require("../controllers/coletaController");
+} = require("../controller/coletaController");
 
 const router = express.Router();
 

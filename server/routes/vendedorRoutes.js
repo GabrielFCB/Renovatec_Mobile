@@ -2,7 +2,7 @@ const express = require("express");
 const {
   getVendedorByID,
   getVendedor,
-} = require("../controllers/vendedorController");
+} = require("../controller/vendedorController");
 
 const router = express.Router();
 

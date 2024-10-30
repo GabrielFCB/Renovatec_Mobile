@@ -4,7 +4,7 @@ const {
   insertPneu,
   getPneuByColeta,
   updatePneu,
-} = require("../controllers/pneuController");
+} = require("../controller/pneuController");
 
 const router = express.Router();
 

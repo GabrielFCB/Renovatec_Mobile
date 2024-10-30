@@ -6,7 +6,7 @@ const {
   getClienteWithVendedor,
   deleteClienteById,
   updateCliente,
-} = require("../controllers/clienteController.js");
+} = require("../controller/clienteController");
 
 const router = express.Router();
 
