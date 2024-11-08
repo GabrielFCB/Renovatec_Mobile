@@ -1,13 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { supabase } from '../supabase';
+import { useAuth } from '../context/Auth';
 
 
 export default function MenuScreen({ navigation }) {
 
+    const { setSession, setUser, setAuth } = useAuth();
+
     async function signOut() {
 
         const { error } = await supabase.auth.signOut()
-
+        setSession(null);
+        setUser(null);
+        setAuth(false);
         if (error) {
             Alert.alert(error.message);
         }

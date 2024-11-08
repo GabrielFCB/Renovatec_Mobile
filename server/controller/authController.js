@@ -40,3 +40,19 @@ exports.passwordReset = async (req, res) => {
   if (error) return res.status(400).json({ error: error.message });
   res.status(200).json({ message: "Password reset email sent" });
 };
+
+exports.getSession = async (req, res) => {
+  try {
+    const response = await supabase.auth.getSession();
+    const { data, error } = response;
+
+    if (error) {
+      throw error;
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Erro ao fazer login:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
