@@ -32,19 +32,30 @@ export default function LoginScreen({ navigation }) {
         if (!validateFields()) return; // Impede a continuação se os campos estiverem vazios
 
         setLoading(true);
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: username,
-            password: password,
-        });
 
-        if (error) {
-            showToast('error', 'Credenciais incorretas. Por favor, tente novamente.');
-        } else {
-            setSession(data.session);
-            showToast('success', 'Login realizado com sucesso!');
+        try {
+            const response = await fetch("http://localhost:3001/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: username, password: password }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                setSession(result.data.session); // Atualiza a sessão com os dados do servidor
+                showToast("success", "Login realizado com sucesso!");
+            } else {
+                showToast("error", result.error || "Erro ao fazer login. Por favor, tente novamente.");
+            }
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+            showToast("error", "Erro ao conectar-se ao servidor.");
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     return (
