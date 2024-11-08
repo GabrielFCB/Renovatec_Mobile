@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { supabase } from '../supabase';
+import { login } from '../services/authService';
 import { useAuth } from '../context/Auth';
 import Toast from 'react-native-toast-message'; // Import do Toast
 
@@ -34,21 +34,13 @@ export default function LoginScreen({ navigation }) {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3001/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email: username, password: password }),
-            });
+            const response = await login(username, password); // Chama a função login do serviço
 
-            const result = await response.json();
-
-            if (response.ok) {
-                setSession(result.data.session); // Atualiza a sessão com os dados do servidor
+            if (response.success) {
+                setSession(response.session); // Atualiza a sessão com os dados do servidor
                 showToast("success", "Login realizado com sucesso!");
             } else {
-                showToast("error", result.error || "Erro ao fazer login. Por favor, tente novamente.");
+                showToast("error", response.error);
             }
         } catch (error) {
             console.error("Erro ao fazer login:", error);
@@ -57,6 +49,7 @@ export default function LoginScreen({ navigation }) {
             setLoading(false);
         }
     }
+
 
     return (
         <View style={styles.container}>
