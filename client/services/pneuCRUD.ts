@@ -129,3 +129,15 @@ export async function getPneuAplicarBanda() {
     throw error;
   }
 }
+
+export async function updatePneuExameInicial(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-exame-inicial/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}

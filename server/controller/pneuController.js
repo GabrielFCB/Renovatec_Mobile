@@ -255,3 +255,21 @@ exports.updatePneu = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.updatePneuExameInicial = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "Raspa" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

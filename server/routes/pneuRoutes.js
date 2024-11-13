@@ -15,6 +15,7 @@ const {
   getPneuAutoclave,
   getPneuAplicacaoCola,
   getPneuAplicarBanda,
+  updatePneuExameInicial,
 } = require("../controller/pneuController");
 
 const router = express.Router();
@@ -33,5 +34,6 @@ router.get("/pneus-aplicacao-cola/", getPneuAplicacaoCola);
 router.get("/pneus-aplicar-banda/", getPneuAplicarBanda);
 router.get("/pneus-producao-finalizada/", getPneuByProducaoFinalizada);
 router.put("/pneus/:id", updatePneu);
+router.put("/pneus/etapa-exame-inicial/:id", updatePneuExameInicial);
 
 module.exports = router;

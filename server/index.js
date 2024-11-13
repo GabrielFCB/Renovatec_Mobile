@@ -8,6 +8,7 @@ const clienteRoutes = require("./routes/clienteRoutes");
 const coletaRoutes = require("./routes/coletaRoutes");
 const pneuColetaRoutes = require("./routes/pneuColetaRoutes");
 const pneuRoutes = require("./routes/pneuRoutes");
+const producaoRoutes = require("./routes/producaoRoutes");
 const cors = require("cors");
 
 const app = express();
@@ -22,6 +23,7 @@ app.use("/api", clienteRoutes);
 app.use("/api", coletaRoutes);
 app.use("/api", pneuRoutes);
 app.use("/api", pneuColetaRoutes);
+app.use("/api", producaoRoutes);
 
 // Rota de exemplo para testar o servidor
 app.get("/", (req, res) => {
