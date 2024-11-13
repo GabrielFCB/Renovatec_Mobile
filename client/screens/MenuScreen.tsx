@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
-import { supabase } from '../supabase';
+import { signOut } from '../services/authService';
 import { useAuth } from '../context/Auth';
 
 
@@ -7,17 +7,21 @@ export default function MenuScreen({ navigation }) {
 
     const { setSession, setUser, setAuth } = useAuth();
 
-    async function signOut() {
-
-        const { error } = await supabase.auth.signOut()
-        setSession(null);
-        setUser(null);
-        setAuth(false);
-        if (error) {
-            Alert.alert(error.message);
+    async function handleSignOut() {
+        // Chama a função de logout e aguarda o resultado
+        const response = await signOut();
+        // Verifica se o logout foi bem-sucedido
+        if (response.success) {
+            // Atualiza o estado de sessão, usuário e autenticação
+            setSession(null);
+            setUser(null);
+            setAuth(false);
+        } else {
+            // Exibe um alerta caso ocorra um erro no logout
+            Alert.alert("Erro ao sair do aplicativo");
         }
-
     }
+
 
 
     return (
@@ -41,7 +45,7 @@ export default function MenuScreen({ navigation }) {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => signOut()}
+                onPress={() => handleSignOut()}
             >
                 <Text style={styles.buttonText}>Sair</Text>
             </TouchableOpacity>
