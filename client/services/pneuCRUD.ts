@@ -21,3 +21,15 @@ export async function getPneuRaspa() {
     throw error;
   }
 }
+
+export async function getPneuOrbicushion() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-orbicushion/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}

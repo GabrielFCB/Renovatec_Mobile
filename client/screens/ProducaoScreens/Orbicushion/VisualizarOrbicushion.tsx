@@ -7,7 +7,7 @@ import {
     FlatList,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { supabase } from "../../../supabase";
+import { getPneuOrbicushion } from "../../../services/pneuCRUD";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
@@ -25,10 +25,7 @@ const VisualizarOrbicushion: React.FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data, error } = await supabase
-                .from("Pneu")
-                .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
-                .eq("Etapa_Producao", "Orbicushion");
+            const { data, error } = await getPneuOrbicushion();
 
             if (error) {
                 console.error("Erro ao buscar pneus:", error);
