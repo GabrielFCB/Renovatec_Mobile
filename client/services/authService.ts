@@ -1,5 +1,6 @@
 // authService.js
 import { supabase } from "../supabase";
+import axios from "axios";
 
 export async function login(username, password) {
   try {
@@ -30,16 +31,15 @@ export async function login(username, password) {
 
 export async function signOut() {
   try {
-    // Realiza o logout diretamente pelo Supabase
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      // Retorna erro se houver problema no logout
-      console.error("Erro ao fazer logout:", error);
-      return { success: false, error: error.message };
+    // Chama o endpoint signOut da API
+    const response = await axios.post("http://localhost:3001/api/signOut");
+    // Verifica se a resposta da API foi bem-sucedida
+    if (response.status === 200) {
+      return { success: true, message: "Logout realizado com sucesso." };
+    } else {
+      console.error("Erro ao fazer logout:", response.data.error);
+      return { success: false, error: response.data.error || "Erro no logout" };
     }
-    console.log(error);
-    // Retorno de sucesso após logout
-    return { success: true, message: "Logout realizado com sucesso." };
   } catch (error) {
     console.error("Erro inesperado ao fazer logout:", error);
     return { success: false, error: "Erro inesperado ao fazer logout." };
