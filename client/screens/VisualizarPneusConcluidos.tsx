@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
-import { supabase } from "../supabase";
+import { getPneuProducaoFinalizada } from "../services/pneuCRUD";
 import { PneuItem } from "../src/types";
 
 const VisualizarPneusConcluidos: React.FC = () => {
@@ -8,11 +8,7 @@ const VisualizarPneusConcluidos: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
-        .eq("Etapa_Producao", "ProducaoFinalizada");
-
+      const { data, error } = await getPneuProducaoFinalizada()
       if (error) {
         console.error("Erro ao buscar pneus:", error);
       } else if (data) {

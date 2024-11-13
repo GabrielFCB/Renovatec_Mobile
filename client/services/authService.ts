@@ -1,5 +1,4 @@
 // authService.js
-import { supabase } from "../supabase";
 import axios from "axios";
 
 export async function login(username, password) {
