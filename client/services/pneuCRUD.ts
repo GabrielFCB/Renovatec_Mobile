@@ -69,3 +69,15 @@ export async function getPneuExameFinal() {
     throw error;
   }
 }
+
+export async function getPneuEscareacao() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-escareacao/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}
