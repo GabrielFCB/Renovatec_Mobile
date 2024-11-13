@@ -57,3 +57,18 @@ exports.getSession = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.getUser = async (req, res) => {
+  try {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      throw userError;
+    }
+
+    res.status(200).json({ userData });
+  } catch (error) {
+    console.error("Erro ao obter dados do usuário:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

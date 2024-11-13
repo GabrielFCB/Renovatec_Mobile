@@ -6,6 +6,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { updatePneuExameInicial } from '../../../services/pneuCRUD';
 import { updateProducaoExameInicial } from '../../../services/producaoCRUD';
+import { getUser } from '../../../services/authService';
+import { getVendedorByID } from '../../../services/vendedorCRUD';
 
 
 type RootStackParamList = {
@@ -35,19 +37,16 @@ const ExamScreen: React.FC<Props> = ({ navigation, route }) => {
     const fetchEmployeeName = async () => {
       try {
         // Obtém o usuário autenticado
-        const { data: userData, error: userError } = await supabase.auth.getUser();
+        const { data: userData, error: userError } = await getUser();
 
         if (userError || !userData?.user?.id) {
           throw userError || new Error('Usuário não autenticado');
         }
 
-        const authID = userData.user.id;  // Obtém o auth_ID (ID do usuário no Supabase)
+        const authID = userData.user.id;
 
         // Agora, buscar na tabela de Vendedores o nome baseado no auth_ID
-        const { data, error } = await supabase
-          .from('Vendedor')  // Supondo que a tabela se chame 'Vendedor'
-          .select('nome')    // Buscando o campo 'nome'
-          .eq('auth_ID', authID);  // Buscando pelo auth_ID do usuário
+        const { data, error } = await getVendedorByID(authID);
 
         if (error) {
           throw error;

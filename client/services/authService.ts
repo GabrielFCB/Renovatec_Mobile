@@ -44,3 +44,13 @@ export async function signOut() {
     return { success: false, error: "Erro inesperado ao fazer logout." };
   }
 }
+
+export async function getUser() {
+  try {
+    const response = await axios.get("http://localhost:3001/api/getUser");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}
