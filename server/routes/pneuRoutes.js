@@ -12,6 +12,7 @@ const {
   getPneuExameFinal,
   getPneuEscareacao,
   getPneuCorteBanda,
+  getPneuAutoclave,
 } = require("../controller/pneuController");
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.get("/pneus-exame-inicial/", getPneuExameInicial);
 router.get("/pneus-exame-final/", getPneuExameFinal);
 router.get("/pneus-escareacao/", getPneuEscareacao);
 router.get("/pneus-corte-banda/", getPneuCorteBanda);
+router.get("/pneus-autoclave/", getPneuAutoclave);
 router.get("/pneus-producao-finalizada/", getPneuByProducaoFinalizada);
 router.put("/pneus/:id", updatePneu);
 
