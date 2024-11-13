@@ -57,3 +57,15 @@ export async function getPneuExameInicial() {
     throw error;
   }
 }
+
+export async function getPneuExameFinal() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-exame-final/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}

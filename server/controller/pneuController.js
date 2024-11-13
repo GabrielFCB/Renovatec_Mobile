@@ -128,6 +128,21 @@ exports.getPneuExameInicial = async (req, res) => {
   }
 };
 
+exports.getPneuExameFinal = async (req, res) => {
+  try {
+    const response = await await supabase
+      .from("Pneu")
+      .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
+      .eq("Etapa_Producao", "ExameFinal");
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 exports.updatePneu = async (req, res) => {
   const { id } = req.params;
   const {

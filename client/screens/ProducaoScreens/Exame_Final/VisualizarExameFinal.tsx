@@ -7,7 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { supabase } from "../../../supabase";
+import { getPneuExameFinal } from "../../../services/pneuCRUD";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
@@ -25,10 +25,7 @@ const VisualizarExameFinal: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta, perimeter, width")
-        .eq("Etapa_Producao", "ExameFinal");
+      const { data, error } = await getPneuExameFinal();
 
       if (error) {
         console.error("Erro ao buscar pneus:", error);
@@ -48,9 +45,9 @@ const VisualizarExameFinal: React.FC<Props> = ({ navigation }) => {
       <TouchableOpacity
         style={styles.examButton}
         onPress={() =>
-          navigation.navigate("ExameFinalProd", { 
-            tireId: item.ID_Pneu.toString(), 
-            status: item.status 
+          navigation.navigate("ExameFinalProd", {
+            tireId: item.ID_Pneu.toString(),
+            status: item.status
           })
         }
       >
@@ -61,7 +58,7 @@ const VisualizarExameFinal: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pneus - Exame Inicial</Text>
+      <Text style={styles.title}>Pneus - Exame Final</Text>
 
       {/* Cabeçalho da Tabela */}
       <View style={styles.tableHeader}>
