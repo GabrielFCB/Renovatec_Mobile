@@ -33,3 +33,15 @@ export async function getPneuOrbicushion() {
     throw error;
   }
 }
+
+export async function getPneuMontagem() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-montagem/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}
