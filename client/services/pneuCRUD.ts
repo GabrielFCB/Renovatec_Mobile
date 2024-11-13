@@ -45,3 +45,15 @@ export async function getPneuMontagem() {
     throw error;
   }
 }
+
+export async function getPneuExameInicial() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-exame-inicial/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}
