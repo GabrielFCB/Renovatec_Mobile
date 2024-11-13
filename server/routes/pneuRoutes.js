@@ -16,6 +16,15 @@ const {
   getPneuAplicacaoCola,
   getPneuAplicarBanda,
   updatePneuExameInicial,
+  updatePneuRaspa,
+  updatePneuEscareacao,
+  updatePneuAplicacaoCola,
+  updatePneuOrbicushion,
+  updatePneuCorteBanda,
+  updatePneuAplicarBanda,
+  updatePneuMontagem,
+  updatePneuAutoclave,
+  updatePneuExameFinal,
 } = require("../controller/pneuController");
 
 const router = express.Router();
@@ -35,5 +44,14 @@ router.get("/pneus-aplicar-banda/", getPneuAplicarBanda);
 router.get("/pneus-producao-finalizada/", getPneuByProducaoFinalizada);
 router.put("/pneus/:id", updatePneu);
 router.put("/pneus/etapa-exame-inicial/:id", updatePneuExameInicial);
+router.put("/pneus/etapa-raspa/:id", updatePneuRaspa);
+router.put("/pneus/etapa-escareacao/:id", updatePneuEscareacao);
+router.put("/pneus/etapa-aplicacao-cola/:id", updatePneuAplicacaoCola);
+router.put("/pneus/etapa-orbicushion/:id", updatePneuOrbicushion);
+router.put("/pneus/etapa-corte-banda/:id", updatePneuCorteBanda);
+router.put("/pneus/etapa-aplicar-banda/:id", updatePneuAplicarBanda);
+router.put("/pneus/etapa-montagem/:id", updatePneuMontagem);
+router.put("/pneus/etapa-autoclave/:id", updatePneuAutoclave);
+router.put("/pneus/etapa-exame-final/:id", updatePneuExameFinal);
 
 module.exports = router;

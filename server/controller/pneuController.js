@@ -273,3 +273,164 @@ exports.updatePneuExameInicial = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.updatePneuRaspa = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "Escareacao" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+exports.updatePneuEscareacao = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "AplicacaoDeCola" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuAplicacaoCola = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "Orbicushion" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuOrbicushion = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "CorteDeBanda" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuCorteBanda = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "AplicarBanda" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuAplicarBanda = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "Montagem" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuMontagem = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "Autoclave" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuAutoclave = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "ExameFinal" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.updatePneuExameFinal = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await supabase
+      .from("Pneu")
+      .update({ Etapa_Producao: "ProducaoFinalizada" })
+      .eq("ID_Pneu", id);
+
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

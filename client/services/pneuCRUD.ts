@@ -141,3 +141,111 @@ export async function updatePneuExameInicial(id) {
     throw error;
   }
 }
+
+export async function updatePneuRaspa(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-raspa/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuEscareacao(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-escareacao/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuAplicacaoDeCola(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-aplicacao-cola/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuOrbicushion(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-orbicushion/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuCorteDeBanda(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-corte-banda/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuAplicarBanda(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-aplicar-banda/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuMontagem(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-montagem/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuAutoclave(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-autoclave/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuExameFinal(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-exame-inicial/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
