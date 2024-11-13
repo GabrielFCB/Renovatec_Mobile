@@ -105,3 +105,15 @@ export async function getPneuAutoclave() {
     throw error;
   }
 }
+
+export async function getPneuAplicacaoDeCola() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-aplicacao-cola/"
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pneus com produção finalizada:", error);
+    throw error;
+  }
+}
