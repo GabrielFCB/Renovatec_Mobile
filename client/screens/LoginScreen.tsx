@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { supabase } from '../supabase';
+import { login } from '../services/authService';
 import { useAuth } from '../context/Auth';
 import Toast from 'react-native-toast-message'; // Import do Toast
 
@@ -32,20 +32,24 @@ export default function LoginScreen({ navigation }) {
         if (!validateFields()) return; // Impede a continuação se os campos estiverem vazios
 
         setLoading(true);
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: username,
-            password: password,
-        });
 
-        if (error) {
-            showToast('error', 'Credenciais incorretas. Por favor, tente novamente.');
-        } else {
-            setSession(data.session);
-            showToast('success', 'Login realizado com sucesso!');
+        try {
+            const response = await login(username, password); // Chama a função login do serviço
+
+            if (response.success) {
+                setSession(response.session); // Atualiza a sessão com os dados do servidor
+                showToast("success", "Login realizado com sucesso!");
+            } else {
+                showToast("error", response.error);
+            }
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+            showToast("error", "Erro ao conectar-se ao servidor.");
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     }
+
 
     return (
         <View style={styles.container}>

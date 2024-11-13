@@ -7,7 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { supabase } from "../../../supabase";
+import { getPneuRaspa } from "../../../services/pneuCRUD";
 import { RootStackParamList, PneuItem } from "../../../src/types";
 
 // Definindo o tipo de navegação com base no RootStackParamList
@@ -25,11 +25,7 @@ const VisualizarRaspa: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("Pneu")
-        .select("ID_Pneu, codigo_pneu, status, ID_Coleta")
-        .eq("Etapa_Producao", "Raspa");
-
+      const { data, error } = await getPneuRaspa()
       if (error) {
         console.error("Erro ao buscar pneus:", error);
       } else if (data) {
