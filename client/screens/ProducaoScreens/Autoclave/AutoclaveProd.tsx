@@ -11,7 +11,7 @@ import { Picker } from "@react-native-picker/picker";
 import { StackScreenProps } from "@react-navigation/stack"; // Corrige a importação do StackScreenProps
 import { RootStackParamList } from '../../../src/types';
 import { useNavigation } from "@react-navigation/native";
-import { supabase } from '../../../supabase';
+import { updateProducaoAutoclave } from "../../../services/producaoCRUD";
 import { updatePneuAutoclave, updatePneuMontagem } from "../../../services/pneuCRUD";
 import Toast from 'react-native-toast-message';
 
@@ -31,23 +31,16 @@ const AutoclaveProd: React.FC<Props> = ({ navigation, route }) => {
     }
 
     try {
-      const { error: updateProducaoError } = await supabase
-        .from('Producao')
-        .update({
-          AutCarga: load,
-          AutAutoclave: selectedValue,
-          AutPosicao: position,
-        })
-        .eq('ID_Pneu', route.params.tireId);
-
-      if (updateProducaoError) {
+      try {
+        const response = await updateProducaoAutoclave(route.params.tireId, load, selectedValue, position);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Erro ao salvar',
-          text2: 'Não foi possível atualizar os dados da Autoclave.',
+          text1: 'Erro ao atualizar produção',
+          text2: 'Não foi possível atualizar o orbicushion.',
         });
-        console.error('Erro ao atualizar Producao:', updateProducaoError);
-        return;
+        console.error('Erro ao atualizar o orbicushion:', error);
       }
 
       try {

@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
         };
 
         // Intervalo para verificar a sessão a cada 5 minutos (300000 ms)
-        const intervalId = setInterval(checkAuthStateChange, 300000);
+        const intervalId = setInterval(checkAuthStateChange, 9999999);
 
         // Executa a primeira verificação imediatamente
         checkAuthStateChange();

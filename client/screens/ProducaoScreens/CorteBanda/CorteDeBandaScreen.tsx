@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../../src/types';
-import { supabase } from '../../../supabase';
+import { getPneuById } from '../../../services/pneuCRUD';
 import { updatePneuCorteDeBanda } from '../../../services/pneuCRUD';
+import { updateProducaoCorteBanda } from '../../../services/producaoCRUD';
 import Toast from 'react-native-toast-message'; // Adiciona a importação do Toast
 
 // Define o tipo para a rota
@@ -19,17 +20,18 @@ const CorteBandaScreen = () => {
 
     useEffect(() => {
         const fetchPneuData = async () => {
-            const { data, error } = await supabase
-                .from('Pneu')
-                .select('perimeter, width')
-                .eq('ID_Pneu', tireId)
-                .single(); // Garante que apenas um item seja retornado
-
-            if (error) {
-                console.error("Erro ao buscar dados do pneu:", error);
-            } else if (data) {
-                setPerimeter(data.perimeter);
-                setWidth(data.width);
+            try {
+                const response = await getPneuById(tireId);
+                console.log("Fetch bem-sucedida:", response);
+                setPerimeter(response.perimeter);
+                setWidth(response.width);
+            } catch (error) {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Erro ao fazer get do pneu',
+                    text2: 'Não foi possível encontrar o pneu.',
+                });
+                console.error('Erro ao encontrar pneu:', error);
             }
         };
 
@@ -48,6 +50,18 @@ const CorteBandaScreen = () => {
                 text2: 'Aplique a banda antes de salvar.',
             });
             return;
+        }
+
+        try {
+            const response = await updateProducaoCorteBanda(tireId, isApproved);
+            console.log("Atualização bem-sucedida:", response);
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Erro ao atualizar produção',
+                text2: 'Não foi possível atualizar a raspa.',
+            });
+            console.error('Erro ao atualizar a raspa:', error);
         }
 
         // Atualiza a coluna Etapa_Producao na tabela Pneu

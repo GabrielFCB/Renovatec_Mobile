@@ -40,6 +40,19 @@ exports.insertPneu = async (req, res) => {
   }
 };
 
+exports.getPneuById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await supabase.from("Pneu").select().eq("ID_Pneu", id);
+    const { data, error } = response;
+
+    if (error) throw error;
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 exports.getPneuByColeta = async (req, res) => {
   const { id } = req.params;
   try {

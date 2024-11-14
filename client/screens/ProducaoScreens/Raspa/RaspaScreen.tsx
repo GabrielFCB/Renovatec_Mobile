@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { supabase } from '../../../supabase';
+import { updateProducaoRaspa } from '../../../services/producaoCRUD';
 import { updatePneuRaspa } from '../../../services/pneuCRUD';
 import { RootStackParamList } from '../../../src/types';
 import Toast from 'react-native-toast-message';
@@ -43,24 +43,16 @@ const RaspaScreen: React.FC<Props> = ({ navigation, route }) => {
       const status = approved ? 'approved' : 'rejected';
 
       // Atualizar os dados de Raspa na tabela Producao
-      const { error: updateProducaoError } = await supabase
-        .from('Producao')
-        .update({
-          Rasdata: new Date().toISOString(),
-          RasAproRepro: approved ? true : false,
-          RasLargura: width,
-          RasPerimetro: perimeter,
-        })
-        .eq('ID_Pneu', tireId);
-
-      if (updateProducaoError) {
+      try {
+        const response = await updateProducaoRaspa(tireId, approved, width, perimeter);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados de Raspa.',
+          text1: 'Erro ao atualizar produção',
+          text2: 'Não foi possível atualizar a raspa.',
         });
-        console.error('Erro ao atualizar dados de Raspa:', updateProducaoError);
-        return;
+        console.error('Erro ao atualizar a raspa:', error);
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase

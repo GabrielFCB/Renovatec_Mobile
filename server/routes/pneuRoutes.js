@@ -25,11 +25,13 @@ const {
   updatePneuMontagem,
   updatePneuAutoclave,
   updatePneuExameFinal,
+  getPneuById,
 } = require("../controller/pneuController");
 
 const router = express.Router();
 
 router.post("/pneus", insertPneu);
+router.get("/pneus-by-id/:id", getPneuById);
 router.get("/pneus-by-coleta/:id", getPneuByColeta);
 router.get("/pneus-raspa/", getPneuRaspa);
 router.get("/pneus-orbicushion/", getPneuOrbicushion);

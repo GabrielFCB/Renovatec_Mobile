@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
-import { supabase } from '../../../supabase';
+import { updateProducaoMontagem } from '../../../services/producaoCRUD';
 import { updatePneuMontagem } from '../../../services/pneuCRUD';
 
 type RootStackParamList = {
@@ -46,21 +46,16 @@ const MontagemProd: React.FC<Props> = ({ navigation, route }) => {
     } else {
       const status = approved ? 'approved' : 'rejected';
 
-      const { error: updateProducaoError } = await supabase
-        .from('Producao')
-        .update({
-          MonAproRepro: approved ? true : false,
-        })
-        .eq('ID_Pneu', tireId);
-
-      if (updateProducaoError) {
+      try {
+        const response = await updateProducaoMontagem(tireId, approved);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados da Montagem.',
+          text1: 'Erro ao atualizar produção',
+          text2: 'Não foi possível atualizar a montagem.',
         });
-        console.error('Erro ao atualizar dados de Montagem:', updateProducaoError);
-        return;
+        console.error('Erro ao atualizar a montagem:', error);
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
