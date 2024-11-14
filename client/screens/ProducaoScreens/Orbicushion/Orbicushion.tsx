@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
 import { supabase } from '../../../supabase';
+import { updatePneuOrbicushion } from '../../../services/pneuCRUD';
 
 type RootStackParamList = {
   Orbicushion: { tireId: string };
@@ -65,19 +66,16 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
 
     // Condicional para atualizar a Etapa_Producao apenas se o status for aprovado
     if (approved) {
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'CorteDeBanda' })
-        .eq('ID_Pneu', tireId);
-
-      if (updatePneuError) {
+      try {
+        const response = await updatePneuOrbicushion(tireId);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
           text1: 'Erro ao atualizar pneu',
           text2: 'Não foi possível atualizar a etapa de produção.',
         });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+        console.error('Erro ao atualizar a Etapa_Producao:', error);
       }
     }
 

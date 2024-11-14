@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
 import { supabase } from '../../../supabase';
+import { updatePneuAplicarBanda } from '../../../services/pneuCRUD';
 import { RootStackParamList } from '../../../src/types'; // Certifique-se de que este caminho está correto
 
 type Props = StackScreenProps<RootStackParamList, 'AplicarBandaScreen'>;
@@ -55,19 +56,16 @@ const AplicarBandaScreen: React.FC<Props> = ({ navigation, route }) => {
                 return;
             }
 
-            const { error: updatePneuError } = await supabase
-                .from('Pneu')
-                .update({ Etapa_Producao: 'Montagem' })
-                .eq('ID_Pneu', tireId);
-
-            if (updatePneuError) {
+            try {
+                const response = await updatePneuAplicarBanda(tireId);
+                console.log("Atualização bem-sucedida:", response);
+            } catch (error) {
                 Toast.show({
                     type: 'error',
                     text1: 'Erro ao atualizar pneu',
                     text2: 'Não foi possível atualizar a etapa de produção.',
                 });
-                console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-                return;
+                console.error('Erro ao atualizar a Etapa_Producao:', error);
             }
 
             navigation.navigate('ConfirmationAplicarBanda', {

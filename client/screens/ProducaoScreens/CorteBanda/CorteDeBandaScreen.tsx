@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../../src/types';
 import { supabase } from '../../../supabase';
+import { updatePneuCorteDeBanda } from '../../../services/pneuCRUD';
 import Toast from 'react-native-toast-message'; // Adiciona a importação do Toast
 
 // Define o tipo para a rota
@@ -50,21 +51,17 @@ const CorteBandaScreen = () => {
         }
 
         // Atualiza a coluna Etapa_Producao na tabela Pneu
-        const { error } = await supabase
-            .from('Pneu')
-            .update({ Etapa_Producao: 'AplicarBanda' })
-            .eq('ID_Pneu', tireId);
-
-        if (error) {
+        try {
+            const response = await updatePneuCorteDeBanda(tireId);
+            console.log("Atualização bem-sucedida:", response);
+            navigation.navigate('ConfirmationAplicarBanda' as never, { status: 'approved', tireId } as never);
+        } catch (error) {
             Toast.show({
                 type: 'error',
-                text1: 'Erro ao atualizar',
+                text1: 'Erro ao atualizar pneu',
                 text2: 'Não foi possível atualizar a etapa de produção.',
             });
-            console.error('Erro ao atualizar Etapa_Producao:', error);
-        } else {
-            // Navega para a tela de confirmação com os parâmetros corretos
-            navigation.navigate('ConfirmationAplicarBanda' as never, { status: 'approved', tireId } as never);
+            console.error('Erro ao atualizar a Etapa_Producao:', error);
         }
     };
 

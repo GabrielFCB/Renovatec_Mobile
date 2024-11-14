@@ -12,6 +12,7 @@ import { StackScreenProps } from "@react-navigation/stack"; // Corrige a importa
 import { RootStackParamList } from '../../../src/types';
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from '../../../supabase';
+import { updatePneuAutoclave, updatePneuMontagem } from "../../../services/pneuCRUD";
 import Toast from 'react-native-toast-message';
 
 type Props = StackScreenProps<RootStackParamList, 'AutoclaveProd'>;
@@ -20,6 +21,7 @@ const AutoclaveProd: React.FC<Props> = ({ navigation, route }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [load, setLoad] = useState<string>("");
+
 
   const handleSave = async () => {
     // Verificar se todos os campos estão preenchidos
@@ -48,19 +50,16 @@ const AutoclaveProd: React.FC<Props> = ({ navigation, route }) => {
         return;
       }
 
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'ExameFinal' })
-        .eq('ID_Pneu', route.params.tireId);
-
-      if (updatePneuError) {
+      try {
+        const response = await updatePneuAutoclave(route.params.tireId);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Erro ao atualizar Pneu',
+          text1: 'Erro ao atualizar pneu',
           text2: 'Não foi possível atualizar a etapa de produção.',
         });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+        console.error('Erro ao atualizar a Etapa_Producao:', error);
       }
 
       Toast.show({

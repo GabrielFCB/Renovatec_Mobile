@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
 import { supabase } from '../../../supabase';
+import { updatePneuAplicacaoDeCola } from '../../../services/pneuCRUD';
 
 type RootStackParamList = {
   AplicacaoDeColaScreen: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
@@ -64,25 +65,23 @@ const AplicacaoDeColaScreen: React.FC<Props> = ({ navigation, route }) => {
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'Orbicushion' })  // Substitua 'Orbicushion' pela fase correta
-        .eq('ID_Pneu', tireId);
-
-      if (updatePneuError) {
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao atualizar pneu',
-          text2: 'Não foi possível atualizar a etapa de produção.',
-        });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+      if (approved) {
+        try {
+          const response = await updatePneuAplicacaoDeCola(tireId);
+          console.log("Atualização bem-sucedida:", response);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Erro ao atualizar pneu',
+            text2: 'Não foi possível atualizar a etapa de produção.',
+          });
+          console.error('Erro ao atualizar a Etapa_Producao:', error);
+        }
       }
-
       // Navegar para a tela de confirmação após salvar os dados com sucesso
       navigation.navigate('ConfirmationAplicacaoDeCola', {
         status,
-        tireId, 
+        tireId,
       });
     }
   };

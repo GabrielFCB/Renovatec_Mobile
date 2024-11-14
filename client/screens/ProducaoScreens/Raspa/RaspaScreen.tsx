@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { supabase } from '../../../supabase';
+import { updatePneuRaspa } from '../../../services/pneuCRUD';
 import { RootStackParamList } from '../../../src/types';
 import Toast from 'react-native-toast-message';
 
@@ -63,21 +64,19 @@ const RaspaScreen: React.FC<Props> = ({ navigation, route }) => {
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'Escareacao' })  // Substitua 'Escareacao' pela fase correta
-        .eq('ID_Pneu', tireId);
-
-      if (updatePneuError) {
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao atualizar pneu',
-          text2: 'Não foi possível atualizar a etapa de produção.',
-        });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+      if (approved) {
+        try {
+          const response = await updatePneuRaspa(tireId);
+          console.log("Atualização bem-sucedida:", response);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Erro ao atualizar pneu',
+            text2: 'Não foi possível atualizar a etapa de produção.',
+          });
+          console.error('Erro ao atualizar a Etapa_Producao:', error);
+        }
       }
-
       // Navegar para a tela de confirmação após salvar os dados com sucesso
       navigation.navigate('ConfirmationRaspaScreen', {
         width,
