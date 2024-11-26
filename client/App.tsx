@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { RootStackParamList } from "./src/types";
 import Toast from "react-native-toast-message";
 import AuthProvider, { useAuth } from "./context/Auth";
+import 'react-native-gesture-handler';
+
 
 // Páginas
 import LoginScreen from "./screens/LoginScreen";

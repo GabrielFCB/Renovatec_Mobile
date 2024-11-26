@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
             }
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            showToast("error", "Erro ao conectar-se ao servidor.");
+            showToast("error", error)
         } finally {
             setLoading(false);
         }
