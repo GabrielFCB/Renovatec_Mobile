@@ -2,7 +2,7 @@
 import axios from "axios";
 import BASE_URL from "../services/apiConfig";
 
-export async function login(username, password) {
+export async function login(username: string, password: string) {
   try {
     const response = await fetch(`${BASE_URL}/api/login`, {
       method: "POST",
@@ -32,7 +32,7 @@ export async function login(username, password) {
 export async function signOut() {
   try {
     // Chama o endpoint signOut da API
-    const response = await axios.post("http://localhost:3001/api/signOut");
+    const response = await axios.post(`${BASE_URL}/api/signOut`);
     // Verifica se a resposta da API foi bem-sucedida
     if (response.status === 200) {
       return { success: true, message: "Logout realizado com sucesso." };
@@ -48,7 +48,7 @@ export async function signOut() {
 
 export async function getUser() {
   try {
-    const response = await axios.get("http://localhost:3001/api/getUser");
+    const response = await axios.get(`${BASE_URL}/api/getUser`);
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
