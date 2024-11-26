@@ -1,5 +1,17 @@
 import axios from "axios";
 
+export async function getPneuById(id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/api/pneus-by-id/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
 export async function getPneuProducaoFinalizada() {
   try {
     const response = await axios.get(
@@ -241,7 +253,7 @@ export async function updatePneuAutoclave(id) {
 export async function updatePneuExameFinal(id) {
   try {
     const response = await axios.put(
-      `http://localhost:3001/api/pneus/etapa-exame-inicial/${id}`
+      `http://localhost:3001/api/pneus/etapa-exame-final/${id}`
     );
     return response.data;
   } catch (error) {

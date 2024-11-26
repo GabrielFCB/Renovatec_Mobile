@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
-import { supabase } from '../../../supabase';
+import { updateProducaoEscareacao } from '../../../services/producaoCRUD';
+import { updatePneuEscareacao } from '../../../services/pneuCRUD';
 
 type RootStackParamList = {
   EscareacaoScreen: { tireId: string; }; // Certifique-se de que esses tipos correspondem aos parâmetros de navegação.
@@ -46,39 +47,32 @@ const EscareacaoScreen: React.FC<Props> = ({ navigation, route }) => {
       const status = approved ? 'approved' : 'rejected';
 
       // Atualizar os dados de Escareacao na tabela Producao
-      const { error: updateProducaoError } = await supabase
-        .from('Producao')
-        .update({
-          EscAproRepro: approved ? true : false,
-        })
-        .eq('ID_Pneu', tireId);
-
-      if (updateProducaoError) {
+      try {
+        const response = await updateProducaoEscareacao(tireId, approved);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Erro ao salvar',
-          text2: 'Não foi possível salvar os dados da Escareacao.',
+          text1: 'Erro ao atualizar produção',
+          text2: 'Não foi possível atualizar a escareação.',
         });
-        console.error('Erro ao atualizar dados de Escareacao:', updateProducaoError);
-        return;
+        console.error('Erro ao atualizar a escareação:', error);
       }
 
       // Atualizar a Etapa_Producao na tabela Pneu para a próxima fase
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'AplicacaoDeCola' })  // Substitua 'Escareacao' pela fase correta
-        .eq('ID_Pneu', tireId);
-
-      if (updatePneuError) {
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao atualizar pneu',
-          text2: 'Não foi possível atualizar a etapa de produção.',
-        });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+      if (approved) {
+        try {
+          const response = await updatePneuEscareacao(tireId);
+          console.log("Atualização bem-sucedida:", response);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Erro ao atualizar pneu',
+            text2: 'Não foi possível atualizar a etapa de produção.',
+          });
+          console.error('Erro ao atualizar a Etapa_Producao:', error);
+        }
       }
-
       // Navegar para a tela de confirmação após salvar os dados com sucesso
       navigation.navigate('ConfirmationEscareacaoScreen', {
         status,

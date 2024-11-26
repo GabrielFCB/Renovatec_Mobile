@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import Toast from 'react-native-toast-message';
-import { supabase } from '../../../supabase';
+import { updateProducaoOrbicushion } from '../../../services/producaoCRUD';
+import { updatePneuOrbicushion } from '../../../services/pneuCRUD';
 
 type RootStackParamList = {
   Orbicushion: { tireId: string };
@@ -48,36 +49,30 @@ const Orbicushion: React.FC<Props> = ({ navigation, route }) => {
     const status = approved ? 'approved' : 'rejected';
 
     // Atualizar a coluna OrbAproRepro na tabela Producao
-    const { error: updateProducaoError } = await supabase
-      .from('Producao')
-      .update({ OrbAproRepro: approved })
-      .eq('ID_Pneu', tireId);
-
-    if (updateProducaoError) {
+    try {
+      const response = await updateProducaoOrbicushion(tireId, approved);
+      console.log("Atualização bem-sucedida:", response);
+    } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Erro ao salvar',
-        text2: 'Não foi possível salvar os dados do Orbicushion.',
+        text1: 'Erro ao atualizar produção',
+        text2: 'Não foi possível atualizar o orbicushion.',
       });
-      console.error('Erro ao atualizar dados do Orbicushion:', updateProducaoError);
-      return;
+      console.error('Erro ao atualizar o orbicushion:', error);
     }
 
     // Condicional para atualizar a Etapa_Producao apenas se o status for aprovado
     if (approved) {
-      const { error: updatePneuError } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'CorteDeBanda' })
-        .eq('ID_Pneu', tireId);
-
-      if (updatePneuError) {
+      try {
+        const response = await updatePneuOrbicushion(tireId);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
         Toast.show({
           type: 'error',
           text1: 'Erro ao atualizar pneu',
           text2: 'Não foi possível atualizar a etapa de produção.',
         });
-        console.error('Erro ao atualizar Etapa_Producao:', updatePneuError);
-        return;
+        console.error('Erro ao atualizar a Etapa_Producao:', error);
       }
     }
 

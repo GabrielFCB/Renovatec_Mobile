@@ -106,16 +106,18 @@ const ExamScreen: React.FC<Props> = ({ navigation, route }) => {
 
       // Atualizar a Etapa_Producao na tabela 'Pneu' para 'Raspa'
 
-      try {
-        const response = await updatePneuExameInicial(tireId);
-        console.log("Atualização bem-sucedida:", response);
-      } catch (error) {
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao atualizar pneu',
-          text2: 'Não foi possível atualizar a etapa de produção.',
-        });
-        console.error('Erro ao atualizar a Etapa_Producao:', error);
+      if (approved) {
+        try {
+          const response = await updatePneuExameInicial(tireId);
+          console.log("Atualização bem-sucedida:", response);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Erro ao atualizar pneu',
+            text2: 'Não foi possível atualizar a etapa de produção.',
+          });
+          console.error('Erro ao atualizar a Etapa_Producao:', error);
+        }
       }
 
 

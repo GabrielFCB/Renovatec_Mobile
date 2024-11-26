@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../src/types";
-import { supabase } from '../../../supabase';
+import { updateProducaoExameFinal } from "../../../services/producaoCRUD";
+import { updatePneuExameFinal } from "../../../services/pneuCRUD";
+import Toast from "react-native-toast-message";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "ExameFinalProd">;
 type ExameFinalScreenRouteProp = RouteProp<RootStackParamList, "ExameFinalProd">;
@@ -58,17 +60,30 @@ const ExameFinalScreen: React.FunctionComponent = () => {
     const status = approved ? "approved" : "rejected";
     const formattedDate = date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` : "";
 
+    try {
+      const response = await updateProducaoExameFinal(route.params.tireId, approved);
+      console.log("Atualização bem-sucedida:", response);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao atualizar produção',
+        text2: 'Não foi possível atualizar o orbicushion.',
+      });
+      console.error('Erro ao atualizar o orbicushion:', error);
+    }
+
     // Atualizar Etapa_Producao para "ProducaoFinalizada" se o status for "approved"
     if (approved) {
-      const { error } = await supabase
-        .from('Pneu')
-        .update({ Etapa_Producao: 'ProducaoFinalizada' })
-        .eq('ID_Pneu', route.params.tireId);
-
-      if (error) {
-        Alert.alert("Erro", "Não foi possível atualizar a etapa de produção.");
-        console.error("Erro ao atualizar Etapa_Producao:", error);
-        return;
+      try {
+        const response = await updatePneuExameFinal(route.params.tireId);
+        console.log("Atualização bem-sucedida:", response);
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao atualizar pneu',
+          text2: 'Não foi possível atualizar a etapa de produção.',
+        });
+        console.error('Erro ao atualizar a Etapa_Producao:', error);
       }
     }
 
