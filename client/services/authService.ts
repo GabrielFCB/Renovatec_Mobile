@@ -1,9 +1,10 @@
 // authService.js
 import axios from "axios";
+import BASE_URL from "../services/apiConfig";
 
 export async function login(username, password) {
   try {
-    const response = await fetch("http://localhost:3001/api/login", {
+    const response = await fetch(`${BASE_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
