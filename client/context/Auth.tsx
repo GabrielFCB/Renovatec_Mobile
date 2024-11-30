@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";  // Para realizar as requisições ao servidor
-import BASE_URL from "../services/apiConfig";
 import { Session } from "@supabase/supabase-js";
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -15,7 +14,7 @@ const AuthProvider = ({ children }) => {
         // Função para obter a sessão atual do servidor
         const fetchSession = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/api/getSession`);
+                const response = await axios.get("http://localhost:3001/api/getSession");
                 setSession(response.data.session);
                 setUser(response.data.session?.user || null);
                 setAuth(!!response.data.session);
@@ -33,7 +32,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuthStateChange = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/api/getSession`);
+                const response = await axios.get("http://localhost:3001/api/getSession");
                 if (response.data.session) {
                     setSession(response.data.session);
                     setUser(response.data.session.user);

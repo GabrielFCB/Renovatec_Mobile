@@ -1,5 +1,4 @@
 import axios from "axios";
-import BASE_URL from "./apiConfig";
 
 export async function updateProducaoExameInicial(
   id: string,
@@ -7,7 +6,7 @@ export async function updateProducaoExameInicial(
 ) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-exame-inicial/${id}`,
+      `http://localhost:3001/api/producao-exame-inicial/${id}`,
       { approved }
     );
     return response.data;
@@ -24,11 +23,10 @@ export async function updateProducaoRaspa(
   perimeter: string
 ) {
   try {
-    const response = await axios.put(`${BASE_URL}/api/producao-raspa/${id}`, {
-      approved,
-      width,
-      perimeter,
-    });
+    const response = await axios.put(
+      `http://localhost:3001/api/producao-raspa/${id}`,
+      { approved, width, perimeter }
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao atualizar exame inicial de produção:", error);
@@ -39,7 +37,7 @@ export async function updateProducaoRaspa(
 export async function updateProducaoEscareacao(id: string, approved: boolean) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-escareacao/${id}`,
+      `http://localhost:3001/api/producao-escareacao/${id}`,
       { approved }
     );
     return response.data;
@@ -55,7 +53,7 @@ export async function updateProducaoAplicacaoCola(
 ) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-aplicacao-cola/${id}`,
+      `http://localhost:3001/api/producao-aplicacao-cola/${id}`,
       { approved }
     );
     return response.data;
@@ -68,7 +66,7 @@ export async function updateProducaoAplicacaoCola(
 export async function updateProducaoOrbicushion(id: string, approved: boolean) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-orbicushion/${id}`,
+      `http://localhost:3001/api/producao-orbicushion/${id}`,
       { approved }
     );
     return response.data;
@@ -81,7 +79,7 @@ export async function updateProducaoOrbicushion(id: string, approved: boolean) {
 export async function updateProducaoCorteBanda(id: string, approved: boolean) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-corte-banda/${id}`,
+      `http://localhost:3001/api/producao-corte-banda/${id}`,
       { approved }
     );
     return response.data;
@@ -97,7 +95,7 @@ export async function updateProducaoAplicarBanda(
 ) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-aplicar-banda/${id}`,
+      `http://localhost:3001/api/producao-aplicar-banda/${id}`,
       { approved }
     );
     return response.data;
@@ -110,7 +108,7 @@ export async function updateProducaoAplicarBanda(
 export async function updateProducaoMontagem(id: string, approved: boolean) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-montagem/${id}`,
+      `http://localhost:3001/api/producao-montagem/${id}`,
       { approved }
     );
     return response.data;
@@ -128,7 +126,7 @@ export async function updateProducaoAutoclave(
 ) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-autoclave/${id}`,
+      `http://localhost:3001/api/producao-autoclave/${id}`,
       { load, selectedValue, position }
     );
     return response.data;
@@ -141,7 +139,7 @@ export async function updateProducaoAutoclave(
 export async function updateProducaoExameFinal(id: string, approved: boolean) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/producao-exame-final/${id}`,
+      `http://localhost:3001/api/producao-exame-final/${id}`,
       { approved }
     );
     return response.data;
