@@ -1,9 +1,10 @@
 import axios from "axios";
-import BASE_URL from "./apiConfig";
 
-export async function getPneuById(id: string) {
+export async function getPneuById(id) {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-by-id/${id}`);
+    const response = await axios.get(
+      `http://localhost:3001/api/pneus-by-id/${id}`
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
@@ -14,7 +15,7 @@ export async function getPneuById(id: string) {
 export async function getPneuProducaoFinalizada() {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/pneus-producao-finalizada/`
+      "http://localhost:3001/api/pneus-producao-finalizada/"
     );
     return response.data;
   } catch (error) {
@@ -25,7 +26,7 @@ export async function getPneuProducaoFinalizada() {
 
 export async function getPneuRaspa() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-raspa/`);
+    const response = await axios.get("http://localhost:3001/api/pneus-raspa/");
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -35,7 +36,9 @@ export async function getPneuRaspa() {
 
 export async function getPneuOrbicushion() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-orbicushion/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-orbicushion/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -45,7 +48,9 @@ export async function getPneuOrbicushion() {
 
 export async function getPneuMontagem() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-montagem/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-montagem/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -55,7 +60,9 @@ export async function getPneuMontagem() {
 
 export async function getPneuExameInicial() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-exame-inicial/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-exame-inicial/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -65,7 +72,9 @@ export async function getPneuExameInicial() {
 
 export async function getPneuExameFinal() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-exame-final/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-exame-final/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -75,7 +84,9 @@ export async function getPneuExameFinal() {
 
 export async function getPneuEscareacao() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-escareacao/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-escareacao/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -85,7 +96,9 @@ export async function getPneuEscareacao() {
 
 export async function getPneuCorteDeBanda() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-corte-banda/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-corte-banda/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -95,7 +108,9 @@ export async function getPneuCorteDeBanda() {
 
 export async function getPneuAutoclave() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-autoclave/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-autoclave/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -105,7 +120,9 @@ export async function getPneuAutoclave() {
 
 export async function getPneuAplicacaoDeCola() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-aplicacao-cola/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-aplicacao-cola/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -115,7 +132,9 @@ export async function getPneuAplicacaoDeCola() {
 
 export async function getPneuAplicarBanda() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/pneus-aplicar-banda/`);
+    const response = await axios.get(
+      "http://localhost:3001/api/pneus-aplicar-banda/"
+    );
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar pneus com produção finalizada:", error);
@@ -123,10 +142,10 @@ export async function getPneuAplicarBanda() {
   }
 }
 
-export async function updatePneuExameInicial(id: string) {
+export async function updatePneuExameInicial(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-exame-inicial/${id}`
+      `http://localhost:3001/api/pneus/etapa-exame-inicial/${id}`
     );
     return response.data;
   } catch (error) {
@@ -135,20 +154,10 @@ export async function updatePneuExameInicial(id: string) {
   }
 }
 
-export async function updatePneuRaspa(id: string) {
-  try {
-    const response = await axios.put(`${BASE_URL}/api/pneus/etapa-raspa/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
-    throw error;
-  }
-}
-
-export async function updatePneuEscareacao(id: string) {
+export async function updatePneuRaspa(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-escareacao/${id}`
+      `http://localhost:3001/api/pneus/etapa-raspa/${id}`
     );
     return response.data;
   } catch (error) {
@@ -157,10 +166,10 @@ export async function updatePneuEscareacao(id: string) {
   }
 }
 
-export async function updatePneuAplicacaoDeCola(id: string) {
+export async function updatePneuEscareacao(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-aplicacao-cola/${id}`
+      `http://localhost:3001/api/pneus/etapa-escareacao/${id}`
     );
     return response.data;
   } catch (error) {
@@ -169,10 +178,10 @@ export async function updatePneuAplicacaoDeCola(id: string) {
   }
 }
 
-export async function updatePneuOrbicushion(id: string) {
+export async function updatePneuAplicacaoDeCola(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-orbicushion/${id}`
+      `http://localhost:3001/api/pneus/etapa-aplicacao-cola/${id}`
     );
     return response.data;
   } catch (error) {
@@ -181,10 +190,10 @@ export async function updatePneuOrbicushion(id: string) {
   }
 }
 
-export async function updatePneuCorteDeBanda(id: string) {
+export async function updatePneuOrbicushion(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-corte-banda/${id}`
+      `http://localhost:3001/api/pneus/etapa-orbicushion/${id}`
     );
     return response.data;
   } catch (error) {
@@ -193,10 +202,10 @@ export async function updatePneuCorteDeBanda(id: string) {
   }
 }
 
-export async function updatePneuAplicarBanda(id: string) {
+export async function updatePneuCorteDeBanda(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-aplicar-banda/${id}`
+      `http://localhost:3001/api/pneus/etapa-corte-banda/${id}`
     );
     return response.data;
   } catch (error) {
@@ -205,10 +214,10 @@ export async function updatePneuAplicarBanda(id: string) {
   }
 }
 
-export async function updatePneuMontagem(id: string) {
+export async function updatePneuAplicarBanda(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-montagem/${id}`
+      `http://localhost:3001/api/pneus/etapa-aplicar-banda/${id}`
     );
     return response.data;
   } catch (error) {
@@ -217,10 +226,10 @@ export async function updatePneuMontagem(id: string) {
   }
 }
 
-export async function updatePneuAutoclave(id: string) {
+export async function updatePneuMontagem(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-autoclave/${id}`
+      `http://localhost:3001/api/pneus/etapa-montagem/${id}`
     );
     return response.data;
   } catch (error) {
@@ -229,10 +238,22 @@ export async function updatePneuAutoclave(id: string) {
   }
 }
 
-export async function updatePneuExameFinal(id: string) {
+export async function updatePneuAutoclave(id) {
   try {
     const response = await axios.put(
-      `${BASE_URL}/api/pneus/etapa-exame-final/${id}`
+      `http://localhost:3001/api/pneus/etapa-autoclave/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar etapa de exame inicial do pneu:", error);
+    throw error;
+  }
+}
+
+export async function updatePneuExameFinal(id) {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/api/pneus/etapa-exame-final/${id}`
     );
     return response.data;
   } catch (error) {
